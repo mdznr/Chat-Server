@@ -15,33 +15,13 @@
 
 using namespace std;
 
-/// Pull the ports into a vector from command-line arguments.
+/// Validate and parse command-line arguments in the form: chat_server <port> [<port> ... <port>]
 /// @param argc The number of arguments (items in @c argv).
 /// @param argv The argument vector.
-/// @return A vector of port numbers.
-vector<int> getPorts(int argc, const char * argv[])
-{
-	// USAGE: chat_server <port> [<port> ... <port>]
-	
-	// Holding vector for all the ports.
-	vector<int> ports;
-	
-	// Collect all port numbers in relevant arguments.
-	for ( int i=1; i<argc; ++i ) {
-		const char *port = argv[i];
-		unsigned int portNumber = atoi(port);
-		ports.push_back(portNumber);
-	}
-	
-	// Return the ports.
-	return ports;
-}
-
-/// Validate and parse command-line arguments.
-/// @param argc The number of arguments (items in @c argv).
-/// @param argv The argument vector.
+/// @param options A map for all enabled options.
+/// @param ports A vector of port numbers.
 /// @return Whether or not this function was successful.
-bool getArguments(int argc, const char * argv[], map<string, bool> *options)
+bool getArguments(int argc, const char * argv[], map<string, bool> *options, vector<unsigned int> *ports)
 {
 	// Check if there's at least one *real* argument (port no.).
 	if ( argc < 2 ) {
@@ -59,35 +39,47 @@ bool getArguments(int argc, const char * argv[], map<string, bool> *options)
 	// Find any specified options.
 	for ( int i=0; i<arguments.size(); ++i ) {
 		string argument = arguments[i]; // Current argument being checked.
-		string prefix("-"); // Prefix that appears before options.
+		string prefix("-"); // The prefix that appears before options.
 		if ( !argument.compare(0, prefix.size(), prefix) ) {
+			// The option string.
 			string option = argument.substr(prefix.size(), argument.size()-prefix.size());
-			// TODO: Remove option from vector.
+			// Remove the option from vector.
+			arguments.erase(arguments.begin()+i);
+			// Turn the option on in the options map.
 			options->insert(pair<string, bool>(option, true));
 		}
+	}
+	
+	// Get the port numbers.
+	for ( int i=0; i<arguments.size(); ++i ) {
+		string port = arguments[i];
+		unsigned int portNumber = stoi(port);
+		ports->push_back(portNumber);
 	}
 	
 	return true;
 }
 
+/// USAGE: chat_server <port> [<port> ... <port>]
 int main(int argc, const char * argv[])
 {
 	// The options for running the program.
 	// -v: Verbose Mode (Default: OFF).
 	map<string, bool> options;
 	
+	// The port numbers to run the chat server on.
+	vector<unsigned int> ports;
+	
+	// Validate and parse the arguments.
+	if ( !getArguments(argc, argv, &options, &ports) ) {
+		return EXIT_FAILURE;
+	}
+	
+	// Verbose mode will print out the chat messages from the server.
 	bool VERBOSE_MODE = false;
 	if ( options["v"] ) {
 		VERBOSE_MODE = true;
 	}
-	
-	// Validate and parse the arguments.
-	if ( !getArguments(argc, argv, &options) ) {
-		return EXIT_FAILURE;
-	}
-	
-	// Get all the ports to have the chat server run on.
-	vector<int> ports = getPorts(argc, argv);
 	
 #ifdef DEBUG
 	// Print "Starting Chat Server on port(s)...".
