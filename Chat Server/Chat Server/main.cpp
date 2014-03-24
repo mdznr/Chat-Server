@@ -17,16 +17,19 @@ using namespace std;
 /// @return A vector of port numbers.
 vector<int> getPorts(int argc, const char * argv[])
 {
-	/*
-	 USAGE:
-	 chat_server <port> [<port> ... <port>]
-	 */
+	// USAGE: chat_server <port> [<port> ... <port>]
+	
+	// Holding vector for all the ports.
 	vector<int> ports;
+	
+	// Collect all port numbers in relevant arguments.
 	for ( unsigned int i=1; i<argc; ++i ) {
 		const char *port = argv[i];
 		unsigned int portNumber = atoi(port);
 		ports.push_back(portNumber);
 	}
+	
+	// Return the ports.
 	return ports;
 }
 
@@ -44,11 +47,13 @@ int main(int argc, const char * argv[])
 #ifdef DEBUG
 	// Print "Starting Chat Server on port(s)...".
 	if ( ports.size() == 1 ) {
+		// Just one port (singular).
 		cout << "Starting Chat Server on port " << ports[0] << "." << endl;
 	} else {
-		cout << "Starting Chat Server on ports " << ports[0]; // First port.
+		// More than one port (plural).
+		cout << "Starting Chat Server on ports " << ports[0];     // First port.
 		for ( unsigned int i=1; i<ports.size()-1; ++i ) {
-			cout << ", " << ports[i]; // All middle ports.
+			cout << ", " << ports[i];                             // All middle ports.
 		}
 		cout << ", and " << ports[ports.size()-1] << "." << endl; // Last port.
 	}
