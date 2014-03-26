@@ -59,11 +59,11 @@
       </BuildableProductRunnable>
       <CommandLineArguments>
          <CommandLineArgument
-            argument = "9000"
+            argument = "-v"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
-            argument = "-v"
+            argument = "9000"
             isEnabled = "YES">
          </CommandLineArgument>
          <CommandLineArgument
