@@ -136,38 +136,12 @@ int run(string name, map<string, bool> options, vector<string> misc)
 		printf("Accepted client connection on fd: %d\n", fd);
 #endif
 		
-		// Create a buffer to read the message into.
-		char buffer[BUFFER_SIZE];
-		
-		// Receive the message.
-		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
-		// Check recv() return value.
-		
-		// Stream has errored or ended.
-		if ( n <= 0 ) {
-			// Errored.
-			perror("recv()");
-			continue;
-		} else {
-			// Stream received message.
-			buffer[n] = '\0';
-#ifdef DEBUG
-			//printf("Received message from fd %d: %s\n", fd, buffer);
-#endif
-		}
-		
-		/*
-		 6. Your server does must be a concurrent server (i.e. do not use an iterative server).
-		 */
-		
 		// Create a thread to handle message.
 		sock_msg *arg = (sock_msg *) malloc(sizeof(sock_msg));
 		arg->sock = fd;
 		arg->address = server;
-		arg->msg = stringDuplicate(buffer);
 		if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
 			perror("Could not create thread.");
-			free(arg->msg);
 		}
 	}
 	

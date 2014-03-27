@@ -31,22 +31,42 @@ void *handleRequest(void *argument)
 	sock_msg *arg = (sock_msg *) argument;
 	int fd = arg->sock;
 	struct sockaddr_in client = arg->address;
-	char *requestString = arg->msg;
 	
-	cout << requestString << endl;
+	// Read the IP Address into a string.
+	char *ip_addr = inet_ntoa((struct in_addr)client.sin_addr);
 	
-	// Send a message back.
-	
-	// Buffer to load received messages into.
-	char buffer[BUFFER_SIZE];
-	
-	// Copy the request string back into buffer for testing.
-	strcpy(buffer, requestString);
-	
-	ssize_t send_client_n = send(fd, buffer, strlen(buffer), 0);
-	if ( send_client_n < strlen(buffer) ) {
-		perror("send()");
-		goto end;
+	// Keep receiving while the connection is still open.
+	while ( true ) {
+		// Create a buffer to read the message into.
+		char buffer[BUFFER_SIZE];
+		// Receive the message.
+		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
+		// Check recv() return value.
+		if ( n <= 0 ) {
+			// Errored.
+			perror("recv()");
+			break;
+		} else {
+			// Stream received message.
+			buffer[n] = '\0';
+#ifdef DEBUG
+			printf("Received message from fd %d at %s: %s\n", fd, ip_addr, buffer);
+#endif
+		}
+		
+		
+		// Send a message back.
+		// Buffer to load received messages into.
+		char sendbuffer[BUFFER_SIZE];
+		
+		// Copy the request string back into buffer for testing.
+		strcpy(sendbuffer, buffer);
+		
+		ssize_t send_client_n = send(fd, sendbuffer, strlen(sendbuffer), 0);
+		if ( send_client_n < strlen(sendbuffer) ) {
+			perror("send()");
+			goto end;
+		}
 	}
 	
 end:

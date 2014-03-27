@@ -18,9 +18,6 @@ typedef struct {
 	
 	/// The address in the communications space of the socket.
 	struct sockaddr_in address;
-	
-	/// Message sent by fd.
-	char *msg;
 } sock_msg;
 
 /// Handle an HTTP request.
