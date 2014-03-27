@@ -110,7 +110,11 @@ int run(string name, map<string, bool> options, vector<string> misc)
 	server.sin_port = htons(port);
 	
 	// Bind.
-	bind(sock, (struct sockaddr *) &server, sizeof(server));
+	socklen_t len = sizeof(server);
+	if ( bind(sock, (const struct sockaddr *) &server, len) < 0 ) {
+		perror("bind()");
+		exit(1);
+	}
 	
 	// Create the client.
 	struct sockaddr_in client;
@@ -121,31 +125,41 @@ int run(string name, map<string, bool> options, vector<string> misc)
 	// Keep taking requests from client.
 	while (true) {
 		// Accept client connection.
-		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
+		int newsock = accept(sock, (struct sockaddr *) &client, &fromlen);
 		
 #ifdef DEBUG
-		printf("Accepted client connection on fd: %d\n", fd);
+		printf("Accepted client connection on fd: %d\n", newsock);
 #endif
 		
-		// Create a buffer to read the message into.
-		char buffer[BUFFER_SIZE];
-		
-		// Receive the message.
-		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
-		// Check recv() return value.
-		if ( n <= 0 ) {
-			// Errored.
-			perror("recv()");
-			continue;
+		// Handle socket in child process.
+		int pid = fork();
+		if ( pid == 0 ) {
+			// Create a buffer to read the message into.
+			char buffer[BUFFER_SIZE];
+			
+			// Receive the message.
+			ssize_t n = recv(newsock, buffer, BUFFER_SIZE - 1, 0);
+			// Check recv() return value.
+			if ( n <= 0 ) {
+				// Errored.
+				perror("recv()");
+				continue;
+			} else {
+				// Stream received message.
+				buffer[n] = '\0';
+#ifdef DEBUG
+				printf("Received message from socket %d %s: %s\n", newsock, inet_ntoa((struct in_addr)client.sin_addr), buffer);
+#endif
+			}
+			
+			// The socket is no longer needed.
+			close(newsock);
+			// End the process.
+			wait(NULL);
 		} else {
-			// Stream received message.
-			buffer[n] = '\0';
-#ifdef DEBUG
-			//printf("Received message from fd %d: %s\n", fd, buffer);
-#endif
+			// Parent simply closes the socket.
+			close(newsock);
 		}
-		
-		// Handle message.
 	}
 	
 	// We'll never get here.
