@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "C943EB2F18E07B06005159D9"
+               BlueprintIdentifier = "C95A42A918E4E68E0049091D"
                BuildableName = "Chat Server"
                BlueprintName = "Chat Server"
                ReferencedContainer = "container:Chat Server.xcodeproj">
@@ -32,7 +32,7 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C943EB2F18E07B06005159D9"
+            BlueprintIdentifier = "C95A42A918E4E68E0049091D"
             BuildableName = "Chat Server"
             BlueprintName = "Chat Server"
             ReferencedContainer = "container:Chat Server.xcodeproj">
@@ -51,7 +51,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C943EB2F18E07B06005159D9"
+            BlueprintIdentifier = "C95A42A918E4E68E0049091D"
             BuildableName = "Chat Server"
             BlueprintName = "Chat Server"
             ReferencedContainer = "container:Chat Server.xcodeproj">
@@ -87,7 +87,7 @@
       <BuildableProductRunnable>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "C943EB2F18E07B06005159D9"
+            BlueprintIdentifier = "C95A42A918E4E68E0049091D"
             BuildableName = "Chat Server"
             BlueprintName = "Chat Server"
             ReferencedContainer = "container:Chat Server.xcodeproj">

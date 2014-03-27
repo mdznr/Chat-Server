@@ -7,118 +7,106 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		C943EB3418E07B06005159D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3318E07B06005159D9 /* main.cpp */; };
-		C943EB3618E07B06005159D9 /* Chat_Server.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C943EB3518E07B06005159D9 /* Chat_Server.1 */; };
-		C943EB3E18E29682005159D9 /* Options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3D18E29682005159D9 /* Options.cpp */; };
-		C95A429118E4A9F90049091D /* RequestHandling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95A429018E4A9F90049091D /* RequestHandling.cpp */; };
-		C95A429418E4ACE90049091D /* StringFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = C95A429318E4ACE90049091D /* StringFunctions.c */; };
-		C9ED521218E2AAF200E35F1F /* VectorHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */; };
-		C9ED521518E3A75B00E35F1F /* CommandLineArguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */; };
+		C95A42AE18E4E68E0049091D /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C95A42AD18E4E68E0049091D /* Foundation.framework */; };
+		C95A42B118E4E68E0049091D /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42B018E4E68E0049091D /* main.m */; };
+		C95A42B518E4E68E0049091D /* Chat_Server.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C95A42B418E4E68E0049091D /* Chat_Server.1 */; };
+		C95A42BD18E4E7360049091D /* CommandLineArguments.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42BC18E4E7360049091D /* CommandLineArguments.m */; };
+		C95A42C018E4E9050049091D /* Options.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42BF18E4E9050049091D /* Options.m */; };
+		C95A42C318E4EA2C0049091D /* ArrayHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42C218E4EA2C0049091D /* ArrayHelper.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
-		C943EB2E18E07B06005159D9 /* CopyFiles */ = {
+		C95A42A818E4E68E0049091D /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
 			dstPath = /usr/share/man/man1/;
 			dstSubfolderSpec = 0;
 			files = (
-				C943EB3618E07B06005159D9 /* Chat_Server.1 in CopyFiles */,
+				C95A42B518E4E68E0049091D /* Chat_Server.1 in CopyFiles */,
 			);
 			runOnlyForDeploymentPostprocessing = 1;
 		};
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
-		C943EB3018E07B06005159D9 /* Chat Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Chat Server"; sourceTree = BUILT_PRODUCTS_DIR; };
-		C943EB3318E07B06005159D9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
-		C943EB3518E07B06005159D9 /* Chat_Server.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Chat_Server.1; sourceTree = "<group>"; };
-		C943EB3C18E2967A005159D9 /* Options.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Options.h; sourceTree = "<group>"; };
-		C943EB3D18E29682005159D9 /* Options.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = Options.cpp; sourceTree = "<group>"; };
-		C95A428F18E4A9D30049091D /* RequestHandling.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = RequestHandling.h; sourceTree = "<group>"; };
-		C95A429018E4A9F90049091D /* RequestHandling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RequestHandling.cpp; sourceTree = "<group>"; };
-		C95A429218E4ACE90049091D /* StringFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFunctions.h; sourceTree = "<group>"; };
-		C95A429318E4ACE90049091D /* StringFunctions.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = StringFunctions.c; sourceTree = "<group>"; };
-		C9ED521018E2AAE700E35F1F /* VectorHelper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = VectorHelper.h; sourceTree = "<group>"; };
-		C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = VectorHelper.cpp; sourceTree = "<group>"; };
-		C9ED521318E3664300E35F1F /* CommandLineArguments.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = CommandLineArguments.h; sourceTree = "<group>"; };
-		C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = CommandLineArguments.cpp; sourceTree = "<group>"; };
+		C95A42AA18E4E68E0049091D /* Chat Server */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "Chat Server"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C95A42AD18E4E68E0049091D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		C95A42B018E4E68E0049091D /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		C95A42B318E4E68E0049091D /* Chat Server-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Chat Server-Prefix.pch"; sourceTree = "<group>"; };
+		C95A42B418E4E68E0049091D /* Chat_Server.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Chat_Server.1; sourceTree = "<group>"; };
+		C95A42BB18E4E70E0049091D /* CommandLineArguments.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CommandLineArguments.h; sourceTree = "<group>"; };
+		C95A42BC18E4E7360049091D /* CommandLineArguments.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = CommandLineArguments.m; sourceTree = "<group>"; };
+		C95A42BE18E4E9020049091D /* Options.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Options.h; sourceTree = "<group>"; };
+		C95A42BF18E4E9050049091D /* Options.m */ = {isa = PBXFileReference; explicitFileType = sourcecode.c.objc; fileEncoding = 4; path = Options.m; sourceTree = "<group>"; };
+		C95A42C118E4EA160049091D /* ArrayHelper.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ArrayHelper.h; sourceTree = "<group>"; };
+		C95A42C218E4EA2C0049091D /* ArrayHelper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ArrayHelper.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C943EB2D18E07B06005159D9 /* Frameworks */ = {
+		C95A42A718E4E68E0049091D /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C95A42AE18E4E68E0049091D /* Foundation.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		C943EB2718E07B06005159D9 = {
+		C95A42A118E4E68E0049091D = {
 			isa = PBXGroup;
 			children = (
-				C943EB3218E07B06005159D9 /* Chat Server */,
-				C943EB3118E07B06005159D9 /* Products */,
+				C95A42AF18E4E68E0049091D /* Chat Server */,
+				C95A42AC18E4E68E0049091D /* Frameworks */,
+				C95A42AB18E4E68E0049091D /* Products */,
 			);
 			sourceTree = "<group>";
 		};
-		C943EB3118E07B06005159D9 /* Products */ = {
+		C95A42AB18E4E68E0049091D /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				C943EB3018E07B06005159D9 /* Chat Server */,
+				C95A42AA18E4E68E0049091D /* Chat Server */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		C943EB3218E07B06005159D9 /* Chat Server */ = {
+		C95A42AC18E4E68E0049091D /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C943EB3318E07B06005159D9 /* main.cpp */,
-				C95A429818E4AD040049091D /* Command Line Arguments */,
-				C95A429718E4ACFB0049091D /* Vector Helper */,
-				C95A429618E4ACF10049091D /* Request Handling */,
-				C95A429518E4ACEC0049091D /* String Functions */,
-				C943EB3518E07B06005159D9 /* Chat_Server.1 */,
+				C95A42AD18E4E68E0049091D /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		C95A42AF18E4E68E0049091D /* Chat Server */ = {
+			isa = PBXGroup;
+			children = (
+				C95A42B018E4E68E0049091D /* main.m */,
+				C95A42C418E4F0180049091D /* Command Line Arguments */,
+				C95A42B418E4E68E0049091D /* Chat_Server.1 */,
+				C95A42B218E4E68E0049091D /* Supporting Files */,
 			);
 			path = "Chat Server";
 			sourceTree = "<group>";
 		};
-		C95A429518E4ACEC0049091D /* String Functions */ = {
+		C95A42B218E4E68E0049091D /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C95A429218E4ACE90049091D /* StringFunctions.h */,
-				C95A429318E4ACE90049091D /* StringFunctions.c */,
+				C95A42B318E4E68E0049091D /* Chat Server-Prefix.pch */,
 			);
-			name = "String Functions";
+			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		C95A429618E4ACF10049091D /* Request Handling */ = {
+		C95A42C418E4F0180049091D /* Command Line Arguments */ = {
 			isa = PBXGroup;
 			children = (
-				C95A428F18E4A9D30049091D /* RequestHandling.h */,
-				C95A429018E4A9F90049091D /* RequestHandling.cpp */,
-			);
-			name = "Request Handling";
-			sourceTree = "<group>";
-		};
-		C95A429718E4ACFB0049091D /* Vector Helper */ = {
-			isa = PBXGroup;
-			children = (
-				C9ED521018E2AAE700E35F1F /* VectorHelper.h */,
-				C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */,
-			);
-			name = "Vector Helper";
-			sourceTree = "<group>";
-		};
-		C95A429818E4AD040049091D /* Command Line Arguments */ = {
-			isa = PBXGroup;
-			children = (
-				C9ED521318E3664300E35F1F /* CommandLineArguments.h */,
-				C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */,
-				C943EB3C18E2967A005159D9 /* Options.h */,
-				C943EB3D18E29682005159D9 /* Options.cpp */,
+				C95A42BB18E4E70E0049091D /* CommandLineArguments.h */,
+				C95A42BC18E4E7360049091D /* CommandLineArguments.m */,
+				C95A42BE18E4E9020049091D /* Options.h */,
+				C95A42BF18E4E9050049091D /* Options.m */,
+				C95A42C118E4EA160049091D /* ArrayHelper.h */,
+				C95A42C218E4EA2C0049091D /* ArrayHelper.m */,
 			);
 			name = "Command Line Arguments";
 			sourceTree = "<group>";
@@ -126,13 +114,13 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C943EB2F18E07B06005159D9 /* Chat Server */ = {
+		C95A42A918E4E68E0049091D /* Chat Server */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = C943EB3918E07B06005159D9 /* Build configuration list for PBXNativeTarget "Chat Server" */;
+			buildConfigurationList = C95A42B818E4E68E0049091D /* Build configuration list for PBXNativeTarget "Chat Server" */;
 			buildPhases = (
-				C943EB2C18E07B06005159D9 /* Sources */,
-				C943EB2D18E07B06005159D9 /* Frameworks */,
-				C943EB2E18E07B06005159D9 /* CopyFiles */,
+				C95A42A618E4E68E0049091D /* Sources */,
+				C95A42A718E4E68E0049091D /* Frameworks */,
+				C95A42A818E4E68E0049091D /* CopyFiles */,
 			);
 			buildRules = (
 			);
@@ -140,53 +128,51 @@
 			);
 			name = "Chat Server";
 			productName = "Chat Server";
-			productReference = C943EB3018E07B06005159D9 /* Chat Server */;
+			productReference = C95A42AA18E4E68E0049091D /* Chat Server */;
 			productType = "com.apple.product-type.tool";
 		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
-		C943EB2818E07B06005159D9 /* Project object */ = {
+		C95A42A218E4E68E0049091D /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
 				LastUpgradeCheck = 0510;
 				ORGANIZATIONNAME = "Matt Zanchelli";
 			};
-			buildConfigurationList = C943EB2B18E07B06005159D9 /* Build configuration list for PBXProject "Chat Server" */;
+			buildConfigurationList = C95A42A518E4E68E0049091D /* Build configuration list for PBXProject "Chat Server" */;
 			compatibilityVersion = "Xcode 3.2";
 			developmentRegion = English;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
 			);
-			mainGroup = C943EB2718E07B06005159D9;
-			productRefGroup = C943EB3118E07B06005159D9 /* Products */;
+			mainGroup = C95A42A118E4E68E0049091D;
+			productRefGroup = C95A42AB18E4E68E0049091D /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				C943EB2F18E07B06005159D9 /* Chat Server */,
+				C95A42A918E4E68E0049091D /* Chat Server */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C943EB2C18E07B06005159D9 /* Sources */ = {
+		C95A42A618E4E68E0049091D /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9ED521518E3A75B00E35F1F /* CommandLineArguments.cpp in Sources */,
-				C943EB3E18E29682005159D9 /* Options.cpp in Sources */,
-				C943EB3418E07B06005159D9 /* main.cpp in Sources */,
-				C95A429118E4A9F90049091D /* RequestHandling.cpp in Sources */,
-				C95A429418E4ACE90049091D /* StringFunctions.c in Sources */,
-				C9ED521218E2AAF200E35F1F /* VectorHelper.cpp in Sources */,
+				C95A42BD18E4E7360049091D /* CommandLineArguments.m in Sources */,
+				C95A42C318E4EA2C0049091D /* ArrayHelper.m in Sources */,
+				C95A42B118E4E68E0049091D /* main.m in Sources */,
+				C95A42C018E4E9050049091D /* Options.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		C943EB3718E07B06005159D9 /* Debug */ = {
+		C95A42B618E4E68E0049091D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -224,7 +210,7 @@
 			};
 			name = Debug;
 		};
-		C943EB3818E07B06005159D9 /* Release */ = {
+		C95A42B718E4E68E0049091D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
@@ -256,16 +242,20 @@
 			};
 			name = Release;
 		};
-		C943EB3A18E07B06005159D9 /* Debug */ = {
+		C95A42B918E4E68E0049091D /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chat Server/Chat Server-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
 		};
-		C943EB3B18E07B06005159D9 /* Release */ = {
+		C95A42BA18E4E68E0049091D /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Chat Server/Chat Server-Prefix.pch";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
@@ -273,25 +263,25 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C943EB2B18E07B06005159D9 /* Build configuration list for PBXProject "Chat Server" */ = {
+		C95A42A518E4E68E0049091D /* Build configuration list for PBXProject "Chat Server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C943EB3718E07B06005159D9 /* Debug */,
-				C943EB3818E07B06005159D9 /* Release */,
+				C95A42B618E4E68E0049091D /* Debug */,
+				C95A42B718E4E68E0049091D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		C943EB3918E07B06005159D9 /* Build configuration list for PBXNativeTarget "Chat Server" */ = {
+		C95A42B818E4E68E0049091D /* Build configuration list for PBXNativeTarget "Chat Server" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				C943EB3A18E07B06005159D9 /* Debug */,
-				C943EB3B18E07B06005159D9 /* Release */,
+				C95A42B918E4E68E0049091D /* Debug */,
+				C95A42BA18E4E68E0049091D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
-	rootObject = C943EB2818E07B06005159D9 /* Project object */;
+	rootObject = C95A42A218E4E68E0049091D /* Project object */;
 }

@@ -1,28 +1,20 @@
 //
 //  Options.h
+//  Chat Server
 //
-//  Created by Matt Zanchelli on 3/26/14.
+//  Created by Matt Zanchelli on 3/27/14.
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#ifndef Chat_Server_Options_h
-#define Chat_Server_Options_h
-
-#include <stdio.h>
-#include <cstring>
-#include <map>
-#include <string>
-#include <vector>
+#import <Foundation/Foundation.h>
 
 /// Get the options (arguments prefixed with '-') from command line arguments.
 /// @param argc The number of items in @c argv.
 /// @param argv The argument vector.
-/// @return A map of options to their enabled value.
-std::map<std::string, bool> getOptionsFromCommandLineArguments(int argc, const char *argv[]);
+/// @return A dicrionary of options to their value.
+NSDictionary *getOptionsFromCommandLineArguments(int argc, const char *argv[]);
 
-/// Get the options (arguments prefixed with '-' from command line arguments.
-/// @param arguments The argument vector. Arguments formatted as options will be removed from this vector.
-/// @return A map of options to their enabled value.
-std::map<std::string, bool> getOptionsFromCommandLineArguments(std::vector<std::string> *arguments);
-
-#endif
+/// Get the options (arguments prefixed with '-') from command line arguments.
+/// @param arguments The mutable array of arguments. Arguments formatted as options will be removed from the array.
+/// @return A dictionary of options to their value.
+NSDictionary *getOptionsFromCommandLineArgumentsFromArray(NSMutableArray *arguments);
