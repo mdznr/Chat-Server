@@ -10,6 +10,8 @@
 		C943EB3418E07B06005159D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3318E07B06005159D9 /* main.cpp */; };
 		C943EB3618E07B06005159D9 /* Chat_Server.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C943EB3518E07B06005159D9 /* Chat_Server.1 */; };
 		C943EB3E18E29682005159D9 /* Options.c in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3D18E29682005159D9 /* Options.c */; };
+		C9ED521218E2AAF200E35F1F /* VectorHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521118E2AAF200E35F1F /* VectorHelper.c */; };
+		C9ED521518E3A75B00E35F1F /* CommandLineArguments.c in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -31,6 +33,10 @@
 		C943EB3518E07B06005159D9 /* Chat_Server.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Chat_Server.1; sourceTree = "<group>"; };
 		C943EB3C18E2967A005159D9 /* Options.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Options.h; sourceTree = "<group>"; };
 		C943EB3D18E29682005159D9 /* Options.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = Options.c; sourceTree = "<group>"; };
+		C9ED521018E2AAE700E35F1F /* VectorHelper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = VectorHelper.h; sourceTree = "<group>"; };
+		C9ED521118E2AAF200E35F1F /* VectorHelper.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = VectorHelper.c; sourceTree = "<group>"; };
+		C9ED521318E3664300E35F1F /* CommandLineArguments.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = CommandLineArguments.h; sourceTree = "<group>"; };
+		C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = CommandLineArguments.c; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -64,8 +70,12 @@
 			isa = PBXGroup;
 			children = (
 				C943EB3318E07B06005159D9 /* main.cpp */,
+				C9ED521318E3664300E35F1F /* CommandLineArguments.h */,
+				C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */,
 				C943EB3C18E2967A005159D9 /* Options.h */,
 				C943EB3D18E29682005159D9 /* Options.c */,
+				C9ED521018E2AAE700E35F1F /* VectorHelper.h */,
+				C9ED521118E2AAF200E35F1F /* VectorHelper.c */,
 				C943EB3518E07B06005159D9 /* Chat_Server.1 */,
 			);
 			path = "Chat Server";
@@ -122,8 +132,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9ED521518E3A75B00E35F1F /* CommandLineArguments.c in Sources */,
 				C943EB3E18E29682005159D9 /* Options.c in Sources */,
 				C943EB3418E07B06005159D9 /* main.cpp in Sources */,
+				C9ED521218E2AAF200E35F1F /* VectorHelper.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -233,6 +245,7 @@
 				C943EB3B18E07B06005159D9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
