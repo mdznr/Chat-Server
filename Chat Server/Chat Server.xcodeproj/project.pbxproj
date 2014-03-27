@@ -9,9 +9,11 @@
 /* Begin PBXBuildFile section */
 		C943EB3418E07B06005159D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3318E07B06005159D9 /* main.cpp */; };
 		C943EB3618E07B06005159D9 /* Chat_Server.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C943EB3518E07B06005159D9 /* Chat_Server.1 */; };
-		C943EB3E18E29682005159D9 /* Options.c in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3D18E29682005159D9 /* Options.c */; };
-		C9ED521218E2AAF200E35F1F /* VectorHelper.c in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521118E2AAF200E35F1F /* VectorHelper.c */; };
-		C9ED521518E3A75B00E35F1F /* CommandLineArguments.c in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */; };
+		C943EB3E18E29682005159D9 /* Options.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C943EB3D18E29682005159D9 /* Options.cpp */; };
+		C95A429118E4A9F90049091D /* RequestHandling.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C95A429018E4A9F90049091D /* RequestHandling.cpp */; };
+		C95A429418E4ACE90049091D /* StringFunctions.c in Sources */ = {isa = PBXBuildFile; fileRef = C95A429318E4ACE90049091D /* StringFunctions.c */; };
+		C9ED521218E2AAF200E35F1F /* VectorHelper.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */; };
+		C9ED521518E3A75B00E35F1F /* CommandLineArguments.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -32,11 +34,15 @@
 		C943EB3318E07B06005159D9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C943EB3518E07B06005159D9 /* Chat_Server.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = Chat_Server.1; sourceTree = "<group>"; };
 		C943EB3C18E2967A005159D9 /* Options.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = Options.h; sourceTree = "<group>"; };
-		C943EB3D18E29682005159D9 /* Options.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = Options.c; sourceTree = "<group>"; };
+		C943EB3D18E29682005159D9 /* Options.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = Options.cpp; sourceTree = "<group>"; };
+		C95A428F18E4A9D30049091D /* RequestHandling.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = RequestHandling.h; sourceTree = "<group>"; };
+		C95A429018E4A9F90049091D /* RequestHandling.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RequestHandling.cpp; sourceTree = "<group>"; };
+		C95A429218E4ACE90049091D /* StringFunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = StringFunctions.h; sourceTree = "<group>"; };
+		C95A429318E4ACE90049091D /* StringFunctions.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = StringFunctions.c; sourceTree = "<group>"; };
 		C9ED521018E2AAE700E35F1F /* VectorHelper.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = VectorHelper.h; sourceTree = "<group>"; };
-		C9ED521118E2AAF200E35F1F /* VectorHelper.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = VectorHelper.c; sourceTree = "<group>"; };
+		C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = VectorHelper.cpp; sourceTree = "<group>"; };
 		C9ED521318E3664300E35F1F /* CommandLineArguments.h */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.h; path = CommandLineArguments.h; sourceTree = "<group>"; };
-		C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = CommandLineArguments.c; sourceTree = "<group>"; };
+		C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; fileEncoding = 4; path = CommandLineArguments.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,15 +76,51 @@
 			isa = PBXGroup;
 			children = (
 				C943EB3318E07B06005159D9 /* main.cpp */,
-				C9ED521318E3664300E35F1F /* CommandLineArguments.h */,
-				C9ED521418E3A75B00E35F1F /* CommandLineArguments.c */,
-				C943EB3C18E2967A005159D9 /* Options.h */,
-				C943EB3D18E29682005159D9 /* Options.c */,
-				C9ED521018E2AAE700E35F1F /* VectorHelper.h */,
-				C9ED521118E2AAF200E35F1F /* VectorHelper.c */,
+				C95A429818E4AD040049091D /* Command Line Arguments */,
+				C95A429718E4ACFB0049091D /* Vector Helper */,
+				C95A429618E4ACF10049091D /* Request Handling */,
+				C95A429518E4ACEC0049091D /* String Functions */,
 				C943EB3518E07B06005159D9 /* Chat_Server.1 */,
 			);
 			path = "Chat Server";
+			sourceTree = "<group>";
+		};
+		C95A429518E4ACEC0049091D /* String Functions */ = {
+			isa = PBXGroup;
+			children = (
+				C95A429218E4ACE90049091D /* StringFunctions.h */,
+				C95A429318E4ACE90049091D /* StringFunctions.c */,
+			);
+			name = "String Functions";
+			sourceTree = "<group>";
+		};
+		C95A429618E4ACF10049091D /* Request Handling */ = {
+			isa = PBXGroup;
+			children = (
+				C95A428F18E4A9D30049091D /* RequestHandling.h */,
+				C95A429018E4A9F90049091D /* RequestHandling.cpp */,
+			);
+			name = "Request Handling";
+			sourceTree = "<group>";
+		};
+		C95A429718E4ACFB0049091D /* Vector Helper */ = {
+			isa = PBXGroup;
+			children = (
+				C9ED521018E2AAE700E35F1F /* VectorHelper.h */,
+				C9ED521118E2AAF200E35F1F /* VectorHelper.cpp */,
+			);
+			name = "Vector Helper";
+			sourceTree = "<group>";
+		};
+		C95A429818E4AD040049091D /* Command Line Arguments */ = {
+			isa = PBXGroup;
+			children = (
+				C9ED521318E3664300E35F1F /* CommandLineArguments.h */,
+				C9ED521418E3A75B00E35F1F /* CommandLineArguments.cpp */,
+				C943EB3C18E2967A005159D9 /* Options.h */,
+				C943EB3D18E29682005159D9 /* Options.cpp */,
+			);
+			name = "Command Line Arguments";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,10 +174,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9ED521518E3A75B00E35F1F /* CommandLineArguments.c in Sources */,
-				C943EB3E18E29682005159D9 /* Options.c in Sources */,
+				C9ED521518E3A75B00E35F1F /* CommandLineArguments.cpp in Sources */,
+				C943EB3E18E29682005159D9 /* Options.cpp in Sources */,
 				C943EB3418E07B06005159D9 /* main.cpp in Sources */,
-				C9ED521218E2AAF200E35F1F /* VectorHelper.c in Sources */,
+				C95A429118E4A9F90049091D /* RequestHandling.cpp in Sources */,
+				C95A429418E4ACE90049091D /* StringFunctions.c in Sources */,
+				C9ED521218E2AAF200E35F1F /* VectorHelper.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

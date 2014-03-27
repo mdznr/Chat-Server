@@ -25,6 +25,8 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
+#include "RequestHandling.h"
+#include "StringFunctions.h"
 
 #define BUFFER_SIZE 2048
 
@@ -122,43 +124,50 @@ int run(string name, map<string, bool> options, vector<string> misc)
 	listen(sock, MAX_CLIENTS); // 5 is the number of backlogged waiting clients.
 	printf("Listener socket created and bound to port %d\n", port);
 	
+	// Threads
+	pthread_t tid[MAX_CLIENTS];
+	
 	// Keep taking requests from client.
 	while (true) {
 		// Accept client connection.
-		int newsock = accept(sock, (struct sockaddr *) &client, &fromlen);
+		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
 		
 #ifdef DEBUG
-		printf("Accepted client connection on fd: %d\n", newsock);
+		printf("Accepted client connection on fd: %d\n", fd);
 #endif
 		
-		// Handle socket in child process.
-		int pid = fork();
-		if ( pid == 0 ) {
-			// Create a buffer to read the message into.
-			char buffer[BUFFER_SIZE];
-			
-			// Receive the message.
-			ssize_t n = recv(newsock, buffer, BUFFER_SIZE - 1, 0);
-			// Check recv() return value.
-			if ( n <= 0 ) {
-				// Errored.
-				perror("recv()");
-				continue;
-			} else {
-				// Stream received message.
-				buffer[n] = '\0';
-#ifdef DEBUG
-				printf("Received message from socket %d %s: %s\n", newsock, inet_ntoa((struct in_addr)client.sin_addr), buffer);
-#endif
-			}
-			
-			// The socket is no longer needed.
-			close(newsock);
-			// End the process.
-			wait(NULL);
+		// Create a buffer to read the message into.
+		char buffer[BUFFER_SIZE];
+		
+		// Receive the message.
+		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
+		// Check recv() return value.
+		
+		// Stream has errored or ended.
+		if ( n <= 0 ) {
+			// Errored.
+			perror("recv()");
+			continue;
 		} else {
-			// Parent simply closes the socket.
-			close(newsock);
+			// Stream received message.
+			buffer[n] = '\0';
+#ifdef DEBUG
+			//printf("Received message from fd %d: %s\n", fd, buffer);
+#endif
+		}
+		
+		/*
+		 6. Your server does must be a concurrent server (i.e. do not use an iterative server).
+		 */
+		
+		// Create a thread to handle message.
+		sock_msg *arg = (sock_msg *) malloc(sizeof(sock_msg));
+		arg->sock = fd;
+		arg->address = server;
+		arg->msg = stringDuplicate(buffer);
+		if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
+			perror("Could not create thread.");
+			free(arg->msg);
 		}
 	}
 	
