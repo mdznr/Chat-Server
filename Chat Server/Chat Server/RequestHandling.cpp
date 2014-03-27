@@ -50,7 +50,7 @@ void *handleRequest(void *argument)
 			// Stream received message.
 			buffer[n] = '\0';
 #ifdef DEBUG
-			printf("Received message from fd %d at %s: %s\n", fd, ip_addr, buffer);
+			printf("Received message from fd %d at %s`: %s\n", fd, ip_addr, buffer);
 #endif
 		}
 		
