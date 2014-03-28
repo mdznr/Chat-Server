@@ -56,7 +56,7 @@
 
 - (BOOL)sendOutgoingMessage:(NSString *)message toUserWithName:(NSString *)name
 {
-	
+#warning How to send outgoing message?
 	return YES;
 }
 
