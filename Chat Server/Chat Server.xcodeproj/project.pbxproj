@@ -46,6 +46,7 @@
 		C95A42C618E4F1770049091D /* CSUser.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSUser.m; sourceTree = "<group>"; };
 		C95A42C918E4F5890049091D /* CSUserUniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSUserUniverse.h; sourceTree = "<group>"; };
 		C95A42CA18E4F5890049091D /* CSUserUniverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSUserUniverse.m; sourceTree = "<group>"; };
+		C95A42CD18E508120049091D /* ProgramOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramOptions.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -111,6 +112,7 @@
 			children = (
 				C95A42BB18E4E70E0049091D /* CommandLineArguments.h */,
 				C95A42BC18E4E7360049091D /* CommandLineArguments.m */,
+				C95A42CD18E508120049091D /* ProgramOptions.h */,
 				C95A42BE18E4E9020049091D /* Options.h */,
 				C95A42BF18E4E9050049091D /* Options.m */,
 				C95A42C118E4EA160049091D /* ArrayHelper.h */,

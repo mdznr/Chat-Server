@@ -22,6 +22,9 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		NSLog(@"Options: %@", options);
 		NSLog(@"Misc: %@", misc);
 		
+		// Verbose mode will print out the chat messages from the server.
+		verboseMode = [options[@"v"] isEqual:@YES];
+		
 		// The universe!
 		CSUserUniverse *universe = [[CSUserUniverse alloc] init];
 		

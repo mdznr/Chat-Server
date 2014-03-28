@@ -34,7 +34,7 @@ NSDictionary *getOptionsFromCommandLineArgumentsFromArray(NSMutableArray *argume
 			// The option string (starts after the '-').
 			NSString *option = [argument substringFromIndex:1];
 			// Turn the option on in the options map.
-			options[option] = @(YES);
+			options[option] = @YES;
 		}
 	}
 	
