@@ -12,9 +12,6 @@
 
 @class CSUserUniverse;
 
-/// The shared chat-server universe.
-static CSUserUniverse *sharedUniverse;
-
 @interface CSUserUniverse : NSObject
 
 #pragma mark - Managing Users
