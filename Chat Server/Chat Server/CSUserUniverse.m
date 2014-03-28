@@ -35,25 +35,13 @@
 
 - (BOOL)addUser:(CSUser *)user
 {
-	BOOL (^identicalusernames)(id, NSUInteger, BOOL *) = ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		if ( [((CSUser *)obj).name isEqualToString:user.name] ) {
-			// Do not need to search anymore--stop.
-			*stop = YES;
-			// Passes test.
-			return YES;
-		} else {
-			// Does not pass test.
-			return NO;
-		}
-	};
-	
 	// If the user is already in the universe.
 	if ( [_users containsObject:user] ) {
 		return NO; // Failure.
 	}
 	
 	// If a user already has the same name.
-	if ( [_users indexOfObjectPassingTest:identicalusernames] ) {
+	if ( [self findUserWithName:user.name] != nil ) {
 		return NO; // Failure.
 	}
 	
@@ -119,7 +107,7 @@
 + (NSString *)fullMessageStringFromBaseMessage:(NSString *)message fromUser:(CSUser *)sender
 {
 	// Create a full message in the format:
-	// Username: message
+	// username: message
 	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", sender.name, message];
 	return fullMessage;
 }
