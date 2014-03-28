@@ -22,12 +22,107 @@
 
 @implementation UserUniverse
 
+- (id)init
+{
+	self = [super init];
+	if ( self ) {
+		_users = [[NSMutableArray alloc] init];
+	}
+	return self;
+}
+
 #pragma mark - Public API
 
+- (BOOL)addUser:(User *)user
+{
+	BOOL (^identicalusernames)(id, NSUInteger, BOOL *) = ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
+		if ( [((User *)obj).name isEqualToString:user.name] ) {
+			// Do not need to search anymore--stop.
+			*stop = YES;
+			// Passes test.
+			return YES;
+		} else {
+			// Does not pass test.
+			return NO;
+		}
+	};
+	
+	// If the user is already in the universe.
+	if ( [_users containsObject:user] ) {
+		return NO; // Failure.
+	}
+	
+	// If a user already has the same name.
+	if ( [_users indexOfObjectPassingTest:identicalusernames] ) {
+		return NO; // Failure.
+	}
+	
+	// Add user to the universe.
+	[_users addObject:user];
+	
+	// Success.
+	return YES;
+}
 
+- (BOOL)removeUser:(User *)user
+{
+	// If user is in the universe.
+	if ( [_users containsObject:user] ) {
+		// Remove user from universe.
+		[_users removeObject:user];
+		return YES;
+	}
+	
+	// User does not exist in the universe.
+	return NO;
+}
+
+- (User *)findUserWithName:(NSString *)name
+{
+	// Iterate over all users.
+	for ( User *u in _users ) {
+		if ( [u.name isEqualToString:name] ) {
+			return u;
+		}
+	}
+	
+	// Return nil, since no user has been found.
+	return nil;
+}
+
+- (BOOL)sendMessage:(NSString *)message toUserWithName:(NSString *)name sender:(User *)sender
+{
+	// Find the user.
+	User *receiver = [self findUserWithName:name];
+	
+	// Compose the full message to send.
+	NSString *fullMessage = [UserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
+	
+	// Send the message to the receiving user.
+	return [receiver sendMessage:fullMessage];
+}
+
+- (void)broadcastMessage:(NSString *)message sender:(User *)sender
+{
+	// The full message to send to all users.
+	NSString *fullMessage = [UserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
+	
+	// Iterate over all users in the universe.
+	for ( User *u in _users ) {
+		// Send the message.
+		[u sendMessage:fullMessage];
+	}
+}
 
 #pragma mark - Private API
 
++ (NSString *)fullMessageStringFromBaseMessage:(NSString *)message fromUser:(User *)sender
+{
+	// Create a full message in the format:
+	// Username: message
+	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", sender.name, message];
+	return fullMessage;
+}
 
-
+   
 @end
