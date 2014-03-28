@@ -27,6 +27,16 @@
 
 @implementation CSUser
 
+- (NSString *)description
+{
+	return [NSString stringWithFormat:@"Name: %@", self.name];
+}
+
+- (NSString *)debugDescription
+{
+	return [NSString stringWithFormat:@"Name: %@; fd: %d", self.name, self.fd];
+}
+
 #pragma mark - Initialization
 
 + (instancetype)userWithName:(NSString *)name andFileDescriptor:(int)fd
