@@ -22,6 +22,15 @@
 
 @implementation CSUserUniverse
 
++ (void)initialize
+{
+	static BOOL initialized = NO;
+    if( !initialized ) {
+        initialized = YES;
+		sharedUniverse = [[CSUserUniverse alloc] init];
+    }
+}
+
 - (id)init
 {
 	self = [super init];
