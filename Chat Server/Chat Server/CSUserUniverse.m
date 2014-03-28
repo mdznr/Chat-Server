@@ -1,14 +1,14 @@
 //
-//  UserUniverse.m
+//  CSUserUniverse.m
 //  Chat Server
 //
 //  Created by Matt Zanchelli on 3/27/14.
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import "UserUniverse.h"
+#import "CSUserUniverse.h"
 
-@interface UserUniverse ()
+@interface CSUserUniverse ()
 
 #pragma mark - Private Properties
 
@@ -20,7 +20,7 @@
 
 #pragma mark -
 
-@implementation UserUniverse
+@implementation CSUserUniverse
 
 - (id)init
 {
@@ -33,10 +33,10 @@
 
 #pragma mark - Public API
 
-- (BOOL)addUser:(User *)user
+- (BOOL)addUser:(CSUser *)user
 {
 	BOOL (^identicalusernames)(id, NSUInteger, BOOL *) = ^BOOL(id obj, NSUInteger idx, BOOL *stop) {
-		if ( [((User *)obj).name isEqualToString:user.name] ) {
+		if ( [((CSUser *)obj).name isEqualToString:user.name] ) {
 			// Do not need to search anymore--stop.
 			*stop = YES;
 			// Passes test.
@@ -64,7 +64,7 @@
 	return YES;
 }
 
-- (BOOL)removeUser:(User *)user
+- (BOOL)removeUser:(CSUser *)user
 {
 	// If user is in the universe.
 	if ( [_users containsObject:user] ) {
@@ -77,10 +77,10 @@
 	return NO;
 }
 
-- (User *)findUserWithName:(NSString *)name
+- (CSUser *)findUserWithName:(NSString *)name
 {
 	// Iterate over all users.
-	for ( User *u in _users ) {
+	for ( CSUser *u in _users ) {
 		if ( [u.name isEqualToString:name] ) {
 			return u;
 		}
@@ -90,25 +90,25 @@
 	return nil;
 }
 
-- (BOOL)sendMessage:(NSString *)message toUserWithName:(NSString *)name sender:(User *)sender
+- (BOOL)sendMessage:(NSString *)message toUserWithName:(NSString *)name sender:(CSUser *)sender
 {
 	// Find the user.
-	User *receiver = [self findUserWithName:name];
+	CSUser *receiver = [self findUserWithName:name];
 	
 	// Compose the full message to send.
-	NSString *fullMessage = [UserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
+	NSString *fullMessage = [CSUserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
 	
 	// Send the message to the receiving user.
 	return [receiver sendMessage:fullMessage];
 }
 
-- (void)broadcastMessage:(NSString *)message sender:(User *)sender
+- (void)broadcastMessage:(NSString *)message sender:(CSUser *)sender
 {
 	// The full message to send to all users.
-	NSString *fullMessage = [UserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
+	NSString *fullMessage = [CSUserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
 	
 	// Iterate over all users in the universe.
-	for ( User *u in _users ) {
+	for ( CSUser *u in _users ) {
 		// Send the message.
 		[u sendMessage:fullMessage];
 	}
@@ -116,7 +116,7 @@
 
 #pragma mark - Private API
 
-+ (NSString *)fullMessageStringFromBaseMessage:(NSString *)message fromUser:(User *)sender
++ (NSString *)fullMessageStringFromBaseMessage:(NSString *)message fromUser:(CSUser *)sender
 {
 	// Create a full message in the format:
 	// Username: message

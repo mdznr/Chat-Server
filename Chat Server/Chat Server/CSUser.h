@@ -6,7 +6,7 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-@interface User : NSObject
+@interface CSUser : NSObject
 
 /// Create a user with a particular name and file descriptior.
 /// @param name The name the user goes by.
@@ -15,7 +15,7 @@
 + (instancetype)userWithName:(NSString *)name andFileDescriptor:(int)fd;
 
 /// The name of the user.
-@property (strong, nonatomic) NSString *name;
+@property (strong, nonatomic, readonly) NSString *name;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.

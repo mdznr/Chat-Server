@@ -6,29 +6,32 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import "User.h"
+#import "CSUser.h"
 
 #include <sys/socket.h>
 
-@interface User ()
+@interface CSUser ()
 
 #pragma mark - Private Properties
 
 /// The file descriptor the user can be contacted on.
 @property (nonatomic) int fd;
 
+/// Name property is readwrite internally.
+@property (readwrite) NSString *name;
+
 @end
 
 
 #pragma mark -
 
-@implementation User
+@implementation CSUser
 
 #pragma mark - Initialization
 
 + (instancetype)userWithName:(NSString *)name andFileDescriptor:(int)fd
 {
-	User *newUser = [[User alloc] init];
+	CSUser *newUser = [[CSUser alloc] init];
 	newUser.name = name;
 	newUser.fd = fd;
 	return newUser;
