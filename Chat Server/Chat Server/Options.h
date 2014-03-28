@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 /// Get the options (arguments prefixed with '-') from command line arguments.
 /// @param argc The number of items in @c argv.
 /// @param argv The argument vector.

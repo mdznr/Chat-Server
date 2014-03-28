@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 /// Create an NSArray from an array of c strings.
 /// @param count The number of items in @c array.
 /// @param array The array of C strings.

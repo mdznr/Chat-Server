@@ -6,8 +6,6 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 /// The function to be declared by your program.
 int run(NSString *name, NSDictionary *options, NSArray *misc);
 

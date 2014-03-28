@@ -6,9 +6,8 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
-
 #import "CommandLineArguments.h"
+
 #import "ArrayHelper.h"
 #import "Options.h"
 
