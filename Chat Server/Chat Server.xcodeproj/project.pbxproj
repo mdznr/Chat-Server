@@ -15,6 +15,7 @@
 		C95A42C318E4EA2C0049091D /* ArrayHelper.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42C218E4EA2C0049091D /* ArrayHelper.m */; };
 		C95A42C718E4F1770049091D /* CSUser.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42C618E4F1770049091D /* CSUser.m */; };
 		C95A42CB18E4F5890049091D /* CSUserUniverse.m in Sources */ = {isa = PBXBuildFile; fileRef = C95A42CA18E4F5890049091D /* CSUserUniverse.m */; };
+		C9BC0F4518E762AD00FEB951 /* RequestHandling.m in Sources */ = {isa = PBXBuildFile; fileRef = C9BC0F4318E762AD00FEB951 /* RequestHandling.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -47,6 +48,8 @@
 		C95A42C918E4F5890049091D /* CSUserUniverse.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CSUserUniverse.h; sourceTree = "<group>"; };
 		C95A42CA18E4F5890049091D /* CSUserUniverse.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CSUserUniverse.m; sourceTree = "<group>"; };
 		C95A42CD18E508120049091D /* ProgramOptions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ProgramOptions.h; sourceTree = "<group>"; };
+		C9BC0F4318E762AD00FEB951 /* RequestHandling.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RequestHandling.m; sourceTree = "<group>"; };
+		C9BC0F4418E762AD00FEB951 /* RequestHandling.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RequestHandling.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -90,6 +93,8 @@
 			isa = PBXGroup;
 			children = (
 				C95A42B018E4E68E0049091D /* main.m */,
+				C9BC0F4418E762AD00FEB951 /* RequestHandling.h */,
+				C9BC0F4318E762AD00FEB951 /* RequestHandling.m */,
 				C95A42CC18E4F58D0049091D /* User Universe */,
 				C95A42C818E4F1790049091D /* User */,
 				C95A42C418E4F0180049091D /* Command Line Arguments */,
@@ -192,6 +197,7 @@
 			files = (
 				C95A42C718E4F1770049091D /* CSUser.m in Sources */,
 				C95A42BD18E4E7360049091D /* CommandLineArguments.m in Sources */,
+				C9BC0F4518E762AD00FEB951 /* RequestHandling.m in Sources */,
 				C95A42C318E4EA2C0049091D /* ArrayHelper.m in Sources */,
 				C95A42B118E4E68E0049091D /* main.m in Sources */,
 				C95A42C018E4E9050049091D /* Options.m in Sources */,
