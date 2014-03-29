@@ -8,21 +8,12 @@
 
 #import "CSUserUniverse.h"
 
-@interface CSUserUniverse ()
-
-#pragma mark - Private Properties
-
-/// All the users that exist in this universe.
-@property NSMutableArray *users;
-
-@end
-
-
 #pragma mark -
 
-@implementation CSUserUniverse
-
-@synthesize users = _users;
+@implementation CSUserUniverse {
+	/// All the users that exist in this universe.
+	NSMutableArray *users;
+}
 
 - (id)init
 {
@@ -32,6 +23,20 @@
 	}
 	return self;
 }
+
+
+#pragma mark - Properties
+
+- (NSMutableArray *)users
+{
+	return users;
+}
+
+- (void)setUsers:(NSMutableArray *)x
+{
+	users = x;
+}
+
 
 #pragma mark - Public API
 

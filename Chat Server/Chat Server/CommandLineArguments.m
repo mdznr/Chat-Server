@@ -13,8 +13,10 @@
 
 int main(int argc, const char * argv[])
 {
+#if !__has_feature(objc_arc)
 	// Autorelease Pool.
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+#endif
 	
 	// The objects to pass along to run().
 	NSString *name;
@@ -36,7 +38,9 @@ int main(int argc, const char * argv[])
 	// Run the program with the specified options.
 	return run(name, options, arguments);
 	
+#if !__has_feature(objc_arc)
 	[pool drain];
+#endif
 }
 
 void printUsage()

@@ -10,31 +10,24 @@
 
 #include <sys/socket.h>
 
-@interface CSUser ()
-
-#pragma mark - Private Properties
-
-/// The file descriptor the user can be contacted on.
-@property (nonatomic) int fd;
-
-@end
-
-
 #pragma mark -
 
-@implementation CSUser
-
-@synthesize name = _name;
-@synthesize fd = _fd;
+@implementation CSUser {
+	/// The name of the user.
+	NSString *name;
+	
+	/// The file descriptor the user can be contacted on.
+	int fd;
+}
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Name: %@", self.name];
+	return [NSString stringWithFormat:@"Name: %@", [self name]];
 }
 
 - (NSString *)debugDescription
 {
-	return [NSString stringWithFormat:@"Name: %@; fd: %d", self.name, self.fd];
+	return [NSString stringWithFormat:@"Name: %@; fd: %d", [self name], [self fd]];
 }
 
 #pragma mark - Initialization
@@ -42,9 +35,32 @@
 + (id)userWithName:(NSString *)name andFileDescriptor:(int)fd
 {
 	CSUser *newUser = [[CSUser alloc] init];
-	newUser.name = name;
-	newUser.fd = fd;
+	[newUser setName:name];
+	[newUser setFd:fd];
 	return newUser;
+}
+
+
+#pragma mark - Properties
+
+- (NSString *)name
+{
+	return name;
+}
+
+- (void)setName:(NSString *)x
+{
+	name = x;
+}
+
+- (int)fd
+{
+	return fd;
+}
+
+- (void)setFd:(int)x
+{
+	fd = x;
 }
 
 
@@ -52,7 +68,7 @@
 
 - (BOOL)sendMessage:(NSString *)message
 {
-	ssize_t send_client_n = send(self.fd, [message UTF8String], [message length], 0);
+	ssize_t send_client_n = send([self fd], [message UTF8String], [message length], 0);
 	if ( send_client_n < [message length] ) {
 		perror("send()");
 		return NO;
@@ -75,6 +91,7 @@
 
 - (void)dealloc
 {
+//	[super dealloc];
 #warning close the connection.
 }
 

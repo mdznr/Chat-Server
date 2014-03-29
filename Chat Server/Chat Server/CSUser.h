@@ -15,7 +15,7 @@
 + (id)userWithName:(NSString *)name andFileDescriptor:(int)fd;
 
 /// The name of the user.
-@property NSString *name;
+- (NSString *)name;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.

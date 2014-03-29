@@ -112,7 +112,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 			// More than one port (plural).
 			NSArray *portsArray = [ports allObjects];
 			// The first port.
-			NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray firstObject]];
+			NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray objectAtIndex:0]];
 			for ( NSUInteger i=1; i<portsArray.count-1; ++i ) {
 				// All middle ports.
 				portsString = [portsString stringByAppendingFormat:@", %@", portsArray[i]];
