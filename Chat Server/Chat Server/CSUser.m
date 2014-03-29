@@ -10,15 +10,19 @@
 
 #include <sys/socket.h>
 
-#pragma mark -
-
-@implementation CSUser {
+@interface CSUser () {
 	/// The name of the user.
 	NSString *name;
 	
 	/// The file descriptor the user can be contacted on.
 	int fd;
 }
+
+@end
+
+#pragma mark -
+
+@implementation CSUser
 
 - (NSString *)description
 {

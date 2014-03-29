@@ -8,12 +8,16 @@
 
 #import "CSUserUniverse.h"
 
-#pragma mark -
-
-@implementation CSUserUniverse {
+@interface CSUserUniverse () {
 	/// All the users that exist in this universe.
 	NSMutableArray *users;
 }
+
+@end
+
+#pragma mark -
+
+@implementation CSUserUniverse
 
 - (id)init
 {
