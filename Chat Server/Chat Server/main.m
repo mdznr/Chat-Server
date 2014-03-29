@@ -7,6 +7,7 @@
 //
 
 #import "CommandLineArguments.h"
+#import "ProgramOptions.h"
 
 #import "CSUserUniverse.h"
 
