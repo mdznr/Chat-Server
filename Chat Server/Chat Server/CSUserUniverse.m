@@ -8,10 +8,10 @@
 
 #import "CSUserUniverse.h"
 
-@interface CSUserUniverse () {
-	/// All the users that exist in this universe.
-	NSMutableArray *users;
-}
+@interface CSUserUniverse ()
+
+/// All the users that exist in this universe.
+@property NSMutableArray *users;
 
 @end
 
@@ -19,26 +19,15 @@
 
 @implementation CSUserUniverse
 
+@synthesize users;
+
 - (id)init
 {
 	self = [super init];
 	if ( self ) {
-		self.users = [[NSMutableArray alloc] init];
+		[self setUsers:[[NSMutableArray alloc] init]];
 	}
 	return self;
-}
-
-
-#pragma mark - Properties
-
-- (NSMutableArray *)users
-{
-	return users;
-}
-
-- (void)setUsers:(NSMutableArray *)x
-{
-	users = x;
 }
 
 
@@ -47,7 +36,7 @@
 - (BOOL)addUser:(CSUser *)user
 {
 	// If the user is already in the universe.
-	if ( [self.users containsObject:user] ) {
+	if ( [[self users] containsObject:user] ) {
 		return NO; // Failure.
 	}
 	
@@ -57,7 +46,7 @@
 	}
 	
 	// Add user to the universe.
-	[self.users addObject:user];
+	[[self users] addObject:user];
 	
 	// Success.
 	return YES;
@@ -66,9 +55,9 @@
 - (BOOL)removeUser:(CSUser *)user
 {
 	// If user is in the universe.
-	if ( [self.users containsObject:user] ) {
+	if ( [[self users] containsObject:user] ) {
 		// Remove user from universe.
-		[self.users removeObject:user];
+		[[self users] removeObject:user];
 		return YES;
 	}
 	

@@ -10,28 +10,28 @@
 
 #include <sys/socket.h>
 
-@interface CSUser () {
-	/// The name of the user.
-	NSString *username;
-	
-	/// The file descriptor the user can be contacted on.
-	int fd;
-}
+@interface CSUser ()
+
+/// The file descriptor the user can be contacted on.
+@property int fd;
 
 @end
+
 
 #pragma mark -
 
 @implementation CSUser
 
+@synthesize username, fd;
+
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Name: %@", [self username]];
+	return [NSString stringWithFormat:@"%@", [self username]];
 }
 
 - (NSString *)debugDescription
 {
-	return [NSString stringWithFormat:@"Name: %@; fd: %d", [self username], [self fd]];
+	return [NSString stringWithFormat:@"{Name: %@; fd: %d}", [self username], [self fd]];
 }
 
 #pragma mark - Initialization
