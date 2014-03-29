@@ -62,6 +62,37 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		// Verbose mode will print out the chat messages from the server.
 		verboseMode = [options[@"v"] isEqual:@YES];
 		
+#ifdef DEBUG
+		{
+			NSString *isVerboseModeEnabled = @"";
+			if ( !verboseMode ) {
+				isVerboseModeEnabled = @"not ";
+			}
+			NSLog(@"Verbose Mod is %@ enabled.", isVerboseModeEnabled);
+		}
+#endif
+		
+#ifdef DEBUG
+		// Print "Starting Chat Server on port(s)...".
+		if ( ports.count == 1 ) {
+			// Just one port (singular).
+			NSLog(@"Starting Chat Server on port %@.", [ports anyObject]);
+		} else {
+			// More than one port (plural).
+			NSArray *portsArray = [ports allObjects];
+			// The first port.
+			NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray firstObject]];
+			for ( NSUInteger i=1; i<portsArray.count-1; ++i ) {
+				// All middle ports.
+				portsString = [portsString stringByAppendingFormat:@"%@", portsArray[i]];
+			}
+			// The last port.
+			portsString = [portsString stringByAppendingFormat:@"%@", [portsArray lastObject]];
+			NSLog(@"Starting Chat Server on ports %@.", portsString);
+		}
+#endif
+		
+		
 		// The universe!
 		CSUserUniverse *universe = [[CSUserUniverse alloc] init];
 		
