@@ -9,13 +9,13 @@
 @interface CSUser : NSObject
 
 /// Create a user with a particular name and file descriptior.
-/// @param name The name the user goes by.
+/// @param username The name the user goes by.
 /// @param fd The file descriptor that the user can be contacted on.
 /// @return A new user.
-+ (id)userWithName:(NSString *)name andFileDescriptor:(int)fd;
++ (id)userWithUsername:(NSString *)username andFileDescriptor:(int)fd;
 
 /// The name of the user.
-- (NSString *)name;
+- (NSString *)username;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.

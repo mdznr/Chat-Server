@@ -12,7 +12,7 @@
 
 @interface CSUser () {
 	/// The name of the user.
-	NSString *name;
+	NSString *username;
 	
 	/// The file descriptor the user can be contacted on.
 	int fd;
@@ -26,20 +26,20 @@
 
 - (NSString *)description
 {
-	return [NSString stringWithFormat:@"Name: %@", [self name]];
+	return [NSString stringWithFormat:@"Name: %@", [self username]];
 }
 
 - (NSString *)debugDescription
 {
-	return [NSString stringWithFormat:@"Name: %@; fd: %d", [self name], [self fd]];
+	return [NSString stringWithFormat:@"Name: %@; fd: %d", [self username], [self fd]];
 }
 
 #pragma mark - Initialization
 
-+ (id)userWithName:(NSString *)name andFileDescriptor:(int)fd
++ (id)userWithUsername:(NSString *)username andFileDescriptor:(int)fd
 {
 	CSUser *newUser = [[CSUser alloc] init];
-	[newUser setName:name];
+	[newUser setUsername:username];
 	[newUser setFd:fd];
 	return newUser;
 }
@@ -47,14 +47,14 @@
 
 #pragma mark - Properties
 
-- (NSString *)name
+- (NSString *)username
 {
-	return name;
+	return username;
 }
 
-- (void)setName:(NSString *)x
+- (void)setUsername:(NSString *)x
 {
-	name = x;
+	username = x;
 }
 
 - (int)fd

@@ -52,7 +52,7 @@
 	}
 	
 	// If a user already has the same name.
-	if ( [self findUserWithName:user.name] != nil ) {
+	if ( [self findUserWithName:[user username]] != nil ) {
 		return NO; // Failure.
 	}
 	
@@ -80,7 +80,7 @@
 {
 	// Iterate over all users.
 	for ( CSUser *u in self.users ) {
-		if ( [u.name isEqualToString:name] ) {
+		if ( [[u username] isEqualToString:name] ) {
 			return u;
 		}
 	}
@@ -119,7 +119,7 @@
 {
 	// Create a full message in the format:
 	// username: message
-	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", sender.name, message];
+	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", [sender username], message];
 	return fullMessage;
 }
 

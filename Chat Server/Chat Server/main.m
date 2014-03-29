@@ -212,7 +212,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		NSString *username = (NSString *) [components objectAtIndex:2];
 		
 		// Create and add the user to the universe.
-		CSUser *user = [CSUser userWithName:username andFileDescriptor:fd];
+		CSUser *user = [CSUser userWithUsername:username andFileDescriptor:fd];
 		if ( ![universe addUser:user] ) {
 #ifdef DEBUG
 			NSLog(@"A user with name '%@' is already logged in.", username);
