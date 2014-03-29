@@ -69,7 +69,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 			if ( !verboseMode ) {
 				isVerboseModeEnabled = @"not ";
 			}
-			NSLog(@"Verbose Mode is %@ enabled.", isVerboseModeEnabled);
+			NSLog(@"Verbose Mode is %@enabled.", isVerboseModeEnabled);
 		}
 #endif
 		
