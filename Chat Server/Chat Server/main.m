@@ -77,167 +77,167 @@ void sendResponseToClient(NSString *response, int client)
 int run(NSString *name, NSDictionary *options, NSArray *misc)
 {
 #ifdef DEBUG
-		NSLog(@"Name: %@", name);
-		NSLog(@"Options: %@", options);
-		NSLog(@"Misc: %@", misc);
+	NSLog(@"Name: %@", name);
+	NSLog(@"Options: %@", options);
+	NSLog(@"Misc: %@", misc);
 #endif
-		
-		// Get the port numbers.
-		NSSet *ports = getPorts(misc);
-		if ( !ports ) {
-			return EXIT_FAILURE;
-		}
-		
-		// Verbose mode will print out the chat messages from the server.
-		verboseMode = [[options objectForKey:@"v"] isEqual:[NSNumber numberWithBool:YES]];
-		
+	
+	// Get the port numbers.
+	NSSet *ports = getPorts(misc);
+	if ( !ports ) {
+		return EXIT_FAILURE;
+	}
+	
+	// Verbose mode will print out the chat messages from the server.
+	verboseMode = [[options objectForKey:@"v"] isEqual:[NSNumber numberWithBool:YES]];
+	
 #ifdef DEBUG
-		// Print "Verbose Mode is ___ enabled.".
-		{
-			NSString *isVerboseModeEnabled = @"";
-			if ( !verboseMode ) {
-				isVerboseModeEnabled = @"not ";
-			}
-			NSLog(@"Verbose Mode is %@enabled.", isVerboseModeEnabled);
+	// Print "Verbose Mode is ___ enabled.".
+	{
+		NSString *isVerboseModeEnabled = @"";
+		if ( !verboseMode ) {
+			isVerboseModeEnabled = @"not ";
 		}
+		NSLog(@"Verbose Mode is %@enabled.", isVerboseModeEnabled);
+	}
 #endif
-		
+	
 #ifdef DEBUG
-		// Print "Starting Chat Server on port(s)...".
-		{
-			if ( ports.count == 1 ) {
-				// Just one port (singular).
-				NSLog(@"Starting Chat Server on port %@.", [ports anyObject]);
-			} else {
-				// More than one port (plural).
-				NSArray *portsArray = [ports allObjects];
-				// The first port.
-				NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray firstObject]];
-				for ( NSUInteger i=1; i<portsArray.count-1; ++i ) {
-					// All middle ports.
-					portsString = [portsString stringByAppendingFormat:@", %@", portsArray[i]];
-				}
-				// The last port.
-				portsString = [portsString stringByAppendingFormat:@", and %@", [portsArray lastObject]];
-				NSLog(@"Starting Chat Server on ports %@.", portsString);
+	// Print "Starting Chat Server on port(s)...".
+	{
+		if ( ports.count == 1 ) {
+			// Just one port (singular).
+			NSLog(@"Starting Chat Server on port %@.", [ports anyObject]);
+		} else {
+			// More than one port (plural).
+			NSArray *portsArray = [ports allObjects];
+			// The first port.
+			NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray firstObject]];
+			for ( NSUInteger i=1; i<portsArray.count-1; ++i ) {
+				// All middle ports.
+				portsString = [portsString stringByAppendingFormat:@", %@", portsArray[i]];
 			}
+			// The last port.
+			portsString = [portsString stringByAppendingFormat:@", and %@", [portsArray lastObject]];
+			NSLog(@"Starting Chat Server on ports %@.", portsString);
 		}
+	}
 #endif
-		
-		// Create the listener socket as TCP socket. (use SOCK_DGRAM for UDP)
+	
+	// Create the listener socket as TCP socket. (use SOCK_DGRAM for UDP)
 #warning Enable UDP, too. (SOCK_DGRAM)
-		int sock = socket(PF_INET, SOCK_STREAM, 0);
-		if ( sock < 0 ) {
-			perror("socket()");
-			exit(1);
-		}
-		
+	int sock = socket(PF_INET, SOCK_STREAM, 0);
+	if ( sock < 0 ) {
+		perror("socket()");
+		exit(1);
+	}
+	
 #warning Handle multiple ports.
-		unsigned short port = [((NSNumber *)[ports anyObject]) unsignedShortValue];
-		
-		// Create the server.
-		struct sockaddr_in server;
-		server.sin_family = PF_INET;
-		server.sin_addr.s_addr = INADDR_ANY;
-		server.sin_port = htons(port);
-		
-		// Bind.
-		socklen_t len = sizeof(server);
-		if ( bind(sock, (const struct sockaddr *) &server, len) < 0 ) {
-			perror("bind()");
-			exit(1);
+	unsigned short port = [((NSNumber *)[ports anyObject]) unsignedShortValue];
+	
+	// Create the server.
+	struct sockaddr_in server;
+	server.sin_family = PF_INET;
+	server.sin_addr.s_addr = INADDR_ANY;
+	server.sin_port = htons(port);
+	
+	// Bind.
+	socklen_t len = sizeof(server);
+	if ( bind(sock, (const struct sockaddr *) &server, len) < 0 ) {
+		perror("bind()");
+		exit(1);
+	}
+	
+	// Create the client.
+	struct sockaddr_in client;
+	socklen_t fromlen = sizeof(client);
+	listen(sock, MAX_CLIENTS); // 5 is the number of backlogged waiting clients.
+	NSLog(@"Listener socket created and bound to port %d.", port);
+	
+	// Threads
+	pthread_t tid[MAX_CLIENTS];
+	
+	// The universe!
+	CSUserUniverse *universe = [[CSUserUniverse alloc] init];
+	
+	// Keep taking requests from client.
+	while (true) {
+		// Accept client connection.
+		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
+#ifdef DEBUG
+		NSLog(@"Accepted client connection on fd: %d", fd);
+#endif
+		// The first message must be authenticating a user.
+		char buffer[BUFFER_SIZE]; // A buffer to read the message into.
+		// Receive the message.
+		ssize_t n = recv(fd, buffer, BUFFER_SIZE-1, 0);
+		// Check if recv() errored.
+		if ( n <= 0 ) {
+			// Errored.
+			perror("recv()");
+			close(fd);
+			continue;
 		}
 		
-		// Create the client.
-		struct sockaddr_in client;
-		socklen_t fromlen = sizeof(client);
-		listen(sock, MAX_CLIENTS); // 5 is the number of backlogged waiting clients.
-		NSLog(@"Listener socket created and bound to port %d.", port);
+		// Ensure the command string terminates.
+		buffer[n] = '\0';
+		NSString *command = [NSString stringWithUTF8String:buffer];
+#ifdef DEBUG
+		NSLog(@"Received command: %@", command);
+#endif
 		
-		// Threads
-		pthread_t tid[MAX_CLIENTS];
+		// Make sure command is the authentication command.
+		if ( ![command hasPrefix:@"ME IS "] ) {
+			// Did not properly authenticate.
+#ifdef DEBUG
+			NSLog(@"New connection did not properly authenticate.");
+#endif
+			sendResponseToClient(@"ERROR", fd);
+			close(fd);
+			continue;
+		}
 		
-		// The universe!
-		CSUserUniverse *universe = [[CSUserUniverse alloc] init];
+		// Get the components of the command.
+		NSArray *components = [command componentsSeparatedByString:@" "];
+		if ( components.count != 3 ) {
+#ifdef DEBUG
+			NSLog(@"Spaces are not allowed in username.");
+#endif
+			sendResponseToClient(@"ERROR", fd);
+			close(fd);
+			continue;
+		}
 		
-		// Keep taking requests from client.
-		while (true) {
-			// Accept client connection.
-			int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
+		// The username is the third component of the command.
+		NSString *username = (NSString *) [components objectAtIndex:2];
+		
+		// Create and add the user to the universe.
+		CSUser *user = [CSUser userWithName:username andFileDescriptor:fd];
+		if ( ![universe addUser:user] ) {
 #ifdef DEBUG
-			NSLog(@"Accepted client connection on fd: %d", fd);
+			NSLog(@"A user with name '%@' is already logged in.", username);
 #endif
-			// The first message must be authenticating a user.
-			char buffer[BUFFER_SIZE]; // A buffer to read the message into.
-			// Receive the message.
-			ssize_t n = recv(fd, buffer, BUFFER_SIZE-1, 0);
-			// Check if recv() errored.
-			if ( n <= 0 ) {
-				// Errored.
-				perror("recv()");
-				close(fd);
-				continue;
-			}
-			
-			// Ensure the command string terminates.
-			buffer[n] = '\0';
-			NSString *command = [NSString stringWithUTF8String:buffer];
+			sendResponseToClient(@"ERROR", fd);
+			close(fd);
+			continue;
+		}
+		
 #ifdef DEBUG
-			NSLog(@"Received command: %@", command);
+		NSLog(@"User: %@ logged in.", user);
 #endif
-			
-			// Make sure command is the authentication command.
-			if ( ![command hasPrefix:@"ME IS "] ) {
-				// Did not properly authenticate.
-#ifdef DEBUG
-				NSLog(@"New connection did not properly authenticate.");
-#endif
-				sendResponseToClient(@"ERROR", fd);
-				close(fd);
-				continue;
-			}
-			
-			// Get the components of the command.
-			NSArray *components = [command componentsSeparatedByString:@" "];
-			if ( components.count != 3 ) {
-#ifdef DEBUG
-				NSLog(@"Spaces are not allowed in username.");
-#endif
-				sendResponseToClient(@"ERROR", fd);
-				close(fd);
-				continue;
-			}
-			
-			// The username is the third component of the command.
-			NSString *username = (NSString *) [components objectAtIndex:2];
-			
-			// Create and add the user to the universe.
-			CSUser *user = [CSUser userWithName:username andFileDescriptor:fd];
-			if ( ![universe addUser:user] ) {
-#ifdef DEBUG
-				NSLog(@"A user with name '%@' is already logged in.", username);
-#endif
-				sendResponseToClient(@"ERROR", fd);
-				close(fd);
-				continue;
-			}
-			
-#ifdef DEBUG
-			NSLog(@"User: %@ logged in.", user);
-#endif
-			sendResponseToClient(@"OK", fd);
-			
+		sendResponseToClient(@"OK", fd);
+		
 #warning pass User object into new thread?
-			// Create a new thread for the user.
-			sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
-			arg->sock = fd;
-			arg->address = server;
-			if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
-				perror("Could not create thread.");
-				close(fd);
-				continue;
-			}
+		// Create a new thread for the user.
+		sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
+		arg->sock = fd;
+		arg->address = server;
+		if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
+			perror("Could not create thread.");
+			close(fd);
+			continue;
 		}
-    return EXIT_SUCCESS;
+	}
+	return EXIT_SUCCESS;
 }
 

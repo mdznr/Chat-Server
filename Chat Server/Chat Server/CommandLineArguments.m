@@ -13,7 +13,9 @@
 
 int main(int argc, const char * argv[])
 {
+	// Autorelease Pool.
 	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
+	
 	// The objects to pass along to run().
 	NSString *name;
 	NSDictionary *options = [[NSDictionary alloc] init];

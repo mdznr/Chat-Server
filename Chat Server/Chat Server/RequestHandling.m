@@ -53,7 +53,6 @@ void *handleRequest(void *argument)
 #endif
 		}
 		
-		
 		// Send a message back.
 		// Buffer to load received messages into.
 		char sendbuffer[BUFFER_SIZE];
