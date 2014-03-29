@@ -8,7 +8,9 @@
 
 #import "CSUserUniverse.h"
 
-@interface CSUserUniverse ()
+@interface CSUserUniverse () {
+	NSMutableArray *users;
+}
 
 /// All the users that exist in this universe.
 @property NSMutableArray *users;

@@ -6,7 +6,9 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-@interface CSUser : NSObject
+@interface CSUser : NSObject {
+	NSString *username;
+}
 
 /// Create a user with a particular name and file descriptior.
 /// @param username The name the user goes by.
