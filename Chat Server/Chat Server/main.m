@@ -68,7 +68,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 			if ( !verboseMode ) {
 				isVerboseModeEnabled = @"not ";
 			}
-			NSLog(@"Verbose Mod is %@ enabled.", isVerboseModeEnabled);
+			NSLog(@"Verbose Mode is %@ enabled.", isVerboseModeEnabled);
 		}
 #endif
 		
@@ -84,10 +84,10 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 			NSString *portsString = [NSString stringWithFormat:@"%@", [portsArray firstObject]];
 			for ( NSUInteger i=1; i<portsArray.count-1; ++i ) {
 				// All middle ports.
-				portsString = [portsString stringByAppendingFormat:@"%@", portsArray[i]];
+				portsString = [portsString stringByAppendingFormat:@", %@", portsArray[i]];
 			}
 			// The last port.
-			portsString = [portsString stringByAppendingFormat:@"%@", [portsArray lastObject]];
+			portsString = [portsString stringByAppendingFormat:@", and %@", [portsArray lastObject]];
 			NSLog(@"Starting Chat Server on ports %@.", portsString);
 		}
 #endif
