@@ -10,10 +10,41 @@
 
 #import "CSUserUniverse.h"
 
+///	The size for a buffer.
 #define BUFFER_SIZE 2048
 
-// Your server must support at least 32 concurrent clients.
+/// THe maximum number of clients.
+/// The server must support at least 32 concurrent clients.
 #define MAX_CLIENTS 32
+
+///	Get the ports from the misc. arguments.
+///	@param arguments The misc. arguments given to the program.
+///	@return A set of port numbers.
+NSSet *getPorts(NSArray *arguments)
+{
+	if ( arguments.count < 1 ) {
+		perror("Must specify at least one port number.\n");
+		return nil;
+	}
+	
+	// A set to collect port numbers in.
+	NSMutableSet *ports = [[NSMutableSet alloc] initWithCapacity:arguments.count];
+	
+	// Get the port numbers.
+	for ( NSString *argument in arguments ) {
+		// Get the integer value of the argument string.
+		NSInteger argumentInteger = [argument integerValue];
+		if ( argumentInteger == 0 ) {
+			// No valid integerValue for argument string, therefore is *not* a valid port.
+			continue;
+		}
+		// Add port to the array of ports.
+		[ports addObject:@(argumentInteger)];
+	}
+	
+	// Return an immutable set of ports.
+	return [NSSet setWithSet:ports];
+}
 
 int run(NSString *name, NSDictionary *options, NSArray *misc)
 {
@@ -21,6 +52,12 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		NSLog(@"Name: %@", name);
 		NSLog(@"Options: %@", options);
 		NSLog(@"Misc: %@", misc);
+		
+		// Get the port numbers.
+		NSSet *ports = getPorts(misc);
+		if ( !ports ) {
+			return EXIT_FAILURE;
+		}
 		
 		// Verbose mode will print out the chat messages from the server.
 		verboseMode = [options[@"v"] isEqual:@YES];
