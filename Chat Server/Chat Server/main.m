@@ -52,7 +52,7 @@ NSSet *getPorts(NSArray *arguments)
 			continue;
 		}
 		// Add port to the array of ports.
-		[ports addObject:@(argumentInteger)];
+		[ports addObject:[NSNumber numberWithInteger:argumentInteger]];
 	}
 	
 	// Return an immutable set of ports.
@@ -76,7 +76,6 @@ void sendResponseToClient(NSString *response, int client)
 
 int run(NSString *name, NSDictionary *options, NSArray *misc)
 {
-	@autoreleasepool {
 #ifdef DEBUG
 		NSLog(@"Name: %@", name);
 		NSLog(@"Options: %@", options);
@@ -90,7 +89,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		}
 		
 		// Verbose mode will print out the chat messages from the server.
-		verboseMode = [options[@"v"] isEqual:@YES];
+		verboseMode = [[options objectForKey:@"v"] isEqual:[NSNumber numberWithBool:YES]];
 		
 #ifdef DEBUG
 		// Print "Verbose Mode is ___ enabled.".
@@ -210,7 +209,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 			}
 			
 			// The username is the third component of the command.
-			NSString *username = (NSString *) components[2];
+			NSString *username = (NSString *) [components objectAtIndex:2];
 			
 			// Create and add the user to the universe.
 			CSUser *user = [CSUser userWithName:username andFileDescriptor:fd];
@@ -239,8 +238,6 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 				continue;
 			}
 		}
-	}
-	
     return EXIT_SUCCESS;
 }
 

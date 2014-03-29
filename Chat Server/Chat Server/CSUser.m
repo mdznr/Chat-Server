@@ -17,9 +17,6 @@
 /// The file descriptor the user can be contacted on.
 @property (nonatomic) int fd;
 
-/// Name property is readwrite internally.
-@property (readwrite) NSString *name;
-
 @end
 
 
@@ -39,7 +36,7 @@
 
 #pragma mark - Initialization
 
-+ (instancetype)userWithName:(NSString *)name andFileDescriptor:(int)fd
++ (id)userWithName:(NSString *)name andFileDescriptor:(int)fd
 {
 	CSUser *newUser = [[CSUser alloc] init];
 	newUser.name = name;
@@ -52,7 +49,7 @@
 
 - (BOOL)sendMessage:(NSString *)message
 {
-	ssize_t send_client_n = send(_fd, [message UTF8String], [message length], 0);
+	ssize_t send_client_n = send(self.fd, [message UTF8String], [message length], 0);
 	if ( send_client_n < [message length] ) {
 		perror("send()");
 		return NO;

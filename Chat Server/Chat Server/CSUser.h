@@ -12,10 +12,10 @@
 /// @param name The name the user goes by.
 /// @param fd The file descriptor that the user can be contacted on.
 /// @return A new user.
-+ (instancetype)userWithName:(NSString *)name andFileDescriptor:(int)fd;
++ (id)userWithName:(NSString *)name andFileDescriptor:(int)fd;
 
 /// The name of the user.
-@property (strong, nonatomic, readonly) NSString *name;
+@property NSString *name;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.

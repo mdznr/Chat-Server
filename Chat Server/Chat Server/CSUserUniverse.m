@@ -13,7 +13,7 @@
 #pragma mark - Private Properties
 
 /// All the users that exist in this universe.
-@property (strong, nonatomic) NSMutableArray *users;
+@property NSMutableArray *users;
 
 @end
 
@@ -26,7 +26,7 @@
 {
 	self = [super init];
 	if ( self ) {
-		_users = [[NSMutableArray alloc] init];
+		self.users = [[NSMutableArray alloc] init];
 	}
 	return self;
 }
@@ -36,7 +36,7 @@
 - (BOOL)addUser:(CSUser *)user
 {
 	// If the user is already in the universe.
-	if ( [_users containsObject:user] ) {
+	if ( [self.users containsObject:user] ) {
 		return NO; // Failure.
 	}
 	
@@ -46,7 +46,7 @@
 	}
 	
 	// Add user to the universe.
-	[_users addObject:user];
+	[self.users addObject:user];
 	
 	// Success.
 	return YES;
@@ -55,9 +55,9 @@
 - (BOOL)removeUser:(CSUser *)user
 {
 	// If user is in the universe.
-	if ( [_users containsObject:user] ) {
+	if ( [self.users containsObject:user] ) {
 		// Remove user from universe.
-		[_users removeObject:user];
+		[self.users removeObject:user];
 		return YES;
 	}
 	
@@ -68,7 +68,7 @@
 - (CSUser *)findUserWithName:(NSString *)name
 {
 	// Iterate over all users.
-	for ( CSUser *u in _users ) {
+	for ( CSUser *u in self.users ) {
 		if ( [u.name isEqualToString:name] ) {
 			return u;
 		}
@@ -96,7 +96,7 @@
 	NSString *fullMessage = [CSUserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
 	
 	// Iterate over all users in the universe.
-	for ( CSUser *u in _users ) {
+	for ( CSUser *u in self.users ) {
 		// Send the message.
 		[u sendMessage:fullMessage];
 	}

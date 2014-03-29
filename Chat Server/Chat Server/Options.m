@@ -25,7 +25,7 @@ NSDictionary *getOptionsFromCommandLineArgumentsFromArray(NSMutableArray *argume
 	// Find any specified options.
 	for ( NSUInteger i=0; i<arguments.count; ++i ) {
 		// The current argument being checked.
-		NSString *argument = arguments[i];
+		NSString *argument = (NSString *) [arguments objectAtIndex:i];
 		// Options start with '-' prefix.
 		if ( argument.length >= 2 && [argument hasPrefix:@"-"] ) {
 			// Remove the argument from the vector.
@@ -34,7 +34,7 @@ NSDictionary *getOptionsFromCommandLineArgumentsFromArray(NSMutableArray *argume
 			// The option string (starts after the '-').
 			NSString *option = [argument substringFromIndex:1];
 			// Turn the option on in the options map.
-			options[option] = @YES;
+			[options setObject:[NSNumber numberWithBool:YES] forKey:option];
 		}
 	}
 	

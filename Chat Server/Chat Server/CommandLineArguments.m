@@ -13,10 +13,11 @@
 
 int main(int argc, const char * argv[])
 {
+	NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
 	// The objects to pass along to run().
 	NSString *name;
-	NSDictionary *options = @{};
-	NSArray *arguments = @[];
+	NSDictionary *options = [[NSDictionary alloc] init];
+	NSArray *arguments = [[NSArray alloc] init];
 	
 	// The executable's name is the first argument.
 	name = [NSString stringWithFormat:@"%s", argv[0]];
@@ -32,6 +33,8 @@ int main(int argc, const char * argv[])
 	
 	// Run the program with the specified options.
 	return run(name, options, arguments);
+	
+	[pool drain];
 }
 
 void printUsage()
