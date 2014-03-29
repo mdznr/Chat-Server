@@ -24,6 +24,9 @@
 
 @implementation CSUser
 
+@synthesize name = _name;
+@synthesize fd = _fd;
+
 - (NSString *)description
 {
 	return [NSString stringWithFormat:@"Name: %@", self.name];

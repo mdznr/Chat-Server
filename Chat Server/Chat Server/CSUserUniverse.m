@@ -22,6 +22,8 @@
 
 @implementation CSUserUniverse
 
+@synthesize users = _users;
+
 - (id)init
 {
 	self = [super init];
