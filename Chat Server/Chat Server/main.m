@@ -17,8 +17,6 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 
-#include "RequestHandling.h"
-
 #import "CSUserUniverse.h"
 
 #warning How to handle the log statements? Debug? Verbose?
@@ -29,6 +27,26 @@
 /// THe maximum number of clients.
 /// The server must support at least 32 concurrent clients.
 #define MAX_CLIENTS 32
+
+CSUserUniverse *universe;
+
+/// A structure to hold a file descriptor and a message.
+typedef struct {
+	/// Socket/File Descriptor.
+	int sock;
+	
+	/// The address in the communications space of the socket.
+	struct sockaddr_in address;
+	
+	///	The user's name
+	const char *username;
+} sock_addr;
+
+/// Handle a request.
+/// @param arg The socket address structure.
+/// @return @c NULL
+/// @discussion Designed for use in new thread.
+void *handleRequest(void *arg);
 
 ///	Get the ports from the misc. arguments.
 ///	@param arguments The misc. arguments given to the program.
@@ -157,8 +175,8 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	// Threads
 	pthread_t tid[MAX_CLIENTS];
 	
-	// The universe!
-	CSUserUniverse *universe = [[CSUserUniverse alloc] init];
+	// Create the universe!
+	universe = [[CSUserUniverse alloc] init];
 	
 	// Keep taking requests from client.
 	while (true) {
@@ -227,11 +245,11 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 #endif
 		sendResponseToClient(@"OK", fd);
 		
-#warning pass User object into new thread?
 		// Create a new thread for the user.
 		sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
 		arg->sock = fd;
 		arg->address = server;
+		arg->username = [[user username] UTF8String];
 		if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
 			perror("Could not create thread.");
 			close(fd);
@@ -239,5 +257,85 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		}
 	}
 	return EXIT_SUCCESS;
+}
+
+#warning Log user out when connection is closed.
+
+void *handleRequest(void *argument)
+{
+	// Unpack argument into variables.
+	sock_addr *arg = (sock_addr *) argument;
+	int fd = arg->sock;
+	struct sockaddr_in client = arg->address;
+	NSString *username = [NSString stringWithUTF8String:arg->username];
+	
+	// Get a reference to the user with the specified username.
+	CSUser *user = [universe findUserWithName:username];
+
+	// Read the IP Address into a string.
+	char *ip_addr = inet_ntoa((struct in_addr)client.sin_addr);
+	
+	// Keep receiving while the connection is still open.
+	while ( true ) {
+		// Create a buffer to read the message into.
+		char buffer[BUFFER_SIZE];
+		// Receive the message.
+		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
+		// Check recv() return value.
+		if ( n <= 0 ) {
+			// Errored.
+			perror("recv()");
+			break;
+		} else {
+			// Stream received message.
+			buffer[n] = '\0';
+#ifdef DEBUG
+			NSLog(@"Received message from fd %d at %s`: %s", fd, ip_addr, buffer);
+#endif
+		}
+		
+		// Handle command.
+		NSString *command = [NSString stringWithUTF8String:buffer];
+		if ( [command hasPrefix:@"SEND "] ) {
+			// SEND
+			NSArray *components = [command componentsSeparatedByString:@" "];
+			// Must have at least three components.
+			if ( [components count] < 3 ) {
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+			NSString *toUsername = [components objectAtIndex:1];
+			NSString *message = [command substringFromIndex:6+[toUsername length]];
+			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
+				sendResponseToClient(@"OK", fd);
+			} else {
+				sendResponseToClient(@"ERROR", fd);
+			}
+		} else if ( [command hasPrefix:@"BROADCAST "] ) {
+			// BROADCAST
+			NSArray *components = [command componentsSeparatedByString:@" "];
+			// Must have at least three components.
+			if ( [components count] < 2 ) {
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+			NSString *message = [command substringFromIndex:10];
+			[user broadcastMessage:message];
+			sendResponseToClient(@"OK", fd);
+		} else {
+			// Unrecognized command.
+			sendResponseToClient(@"ERROR", fd);
+		}
+	}
+	
+end:
+	
+	// The socket is no longer needed.
+	close(fd);
+	
+	// Use this to return message back to calling thread and terminate.
+	pthread_exit(NULL);
+	
+	return NULL;
 }
 

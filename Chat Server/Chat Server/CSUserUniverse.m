@@ -41,6 +41,9 @@
 	// Add user to the universe.
 	[[self users] addObject:user];
 	
+	// Add reference to the universe.
+	[user setUniverse:self];
+	
 	// Success.
 	return YES;
 }
@@ -51,6 +54,7 @@
 	if ( [[self users] containsObject:user] ) {
 		// Remove user from universe.
 		[[self users] removeObject:user];
+		[user setUniverse:nil];
 		return YES;
 	}
 	

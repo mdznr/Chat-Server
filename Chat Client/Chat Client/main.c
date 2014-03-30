@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
+#include <pthread.h>
 #include <stdio.h>
 #include <strings.h> /* for bcopy */
 #include <unistd.h>
@@ -20,6 +21,11 @@
 #define BUFFER_SIZE 1024
 
 unsigned short port = 8127;
+
+/// Handle incoming network traffic for use in new thread.
+/// @param argument an int* cast as void*
+/// @return @C NULL
+void *handleNetwork(void *argument);
 
 int main(int argc, const char *argv[])
 {
@@ -60,7 +66,21 @@ int main(int argc, const char *argv[])
 		perror("connect()");
 		exit(1);
 	}
+	
 	printf("Successfully connected to the chat server at %s:%hu.\n", hostname, port);
+	
+	// Threads
+	pthread_t tid[1];
+	
+	// Receive network thread.
+	// Create a new thread for the user.
+	int *fd = malloc(sizeof(int));
+	*fd = sock;
+	if ( pthread_create(&tid[1], NULL, handleNetwork, (void *) fd) != 0 ) {
+		perror("Could not create thread.");
+		close(sock);
+		exit(1);
+	}
 	
 	// Keep getting user input.
 	while (1) {
@@ -84,33 +104,45 @@ int main(int argc, const char *argv[])
 		}
 		
 		free(msg);
-		
-		// Buffer to load received messages into.
-		char buffer[BUFFER_SIZE];
-		
-		// Receive.
-//		while (1) {
-			// BLOCK
-			ssize_t received_n = recv(sock, buffer, BUFFER_SIZE - 1, 0);
-			if ( received_n == 0 ) {
-				// Peer has closed its half side of the (TCP) connection.
-				fflush(NULL);
-				break;
-			} else if ( received_n < 0 ) {
-				// Error.
-				fflush(NULL);
-				perror("recv()");
-				break;
-			} else {
-				// End the buffer with a null-terminator.
-				buffer[received_n] = '\0';
-				// Print out the received message.
-				printf("%s\n", buffer);
-			}
-//		}
 	}
 	
+	// The connection can now be closed.
 	close(sock);
 	
-	return 0;
+	return EXIT_SUCCESS;
+}
+
+void *handleNetwork(void *argument)
+{
+	// Unload the arguments.
+	int *fd = (int *) argument;
+	
+	// Buffer to load received messages into.
+	char buffer[BUFFER_SIZE];
+	
+	// Receive.
+	while (1) {
+		// BLOCK
+		ssize_t received_n = recv(*fd, buffer, BUFFER_SIZE - 1, 0);
+		if ( received_n == 0 ) {
+			// Peer has closed its half side of the (TCP) connection.
+			fflush(NULL);
+			break;
+		} else if ( received_n < 0 ) {
+			// Error.
+			fflush(NULL);
+			perror("recv()");
+			break;
+		} else {
+			// End the buffer with a null-terminator.
+			buffer[received_n] = '\0';
+			// Print out the received message.
+			printf("%s\n", buffer);
+		}
+	}
+	
+	// Use this to return message back to calling thread and terminate.
+	pthread_exit(NULL);
+	
+	return NULL;
 }

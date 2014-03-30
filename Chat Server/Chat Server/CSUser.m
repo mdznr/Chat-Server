@@ -7,6 +7,7 @@
 //
 
 #import "CSUser.h"
+#import "CSUserUniverse.h"
 
 #include <sys/socket.h>
 
@@ -14,7 +15,7 @@
 
 @implementation CSUser
 
-@synthesize username, fd;
+@synthesize username, fd, universe;
 
 - (NSString *)description
 {
@@ -25,6 +26,7 @@
 {
 	return [NSString stringWithFormat:@"{Name: %@; fd: %d}", [self username], [self fd]];
 }
+
 
 #pragma mark - Initialization
 
@@ -37,30 +39,7 @@
 }
 
 
-#pragma mark - Properties
-
-- (NSString *)username
-{
-	return username;
-}
-
-- (void)setUsername:(NSString *)x
-{
-	username = x;
-}
-
-- (int)fd
-{
-	return fd;
-}
-
-- (void)setFd:(int)x
-{
-	fd = x;
-}
-
-
-#pragma mark - Public API
+#pragma mark - Incoming Message
 
 - (BOOL)sendMessage:(NSString *)message
 {
@@ -74,12 +53,16 @@
 }
 
 
-#pragma mark - Private API
+#pragma mark - Outgoing Message
 
 - (BOOL)sendOutgoingMessage:(NSString *)message toUserWithName:(NSString *)name
 {
-#warning How to send outgoing message?
-	return YES;
+	return [[self universe] sendMessage:message toUserWithName:name sender:self];
+}
+
+- (void)broadcastMessage:(NSString *)message
+{
+	[[self universe] broadcastMessage:message sender:self];
 }
 
 
