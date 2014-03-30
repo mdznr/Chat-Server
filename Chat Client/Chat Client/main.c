@@ -21,8 +21,20 @@
 
 unsigned short port = 8127;
 
-int main()
+int main(int argc, const char *argv[])
 {
+	if ( argc != 3 ) {
+		perror("Usage: ./chatclient <hostname> <port>");
+		exit(1);
+	}
+	
+	const char *hostname = argv[1];
+	unsigned short port = (unsigned short) atoi(argv[2]);
+	if ( !port ) {
+		perror("Invalid port specified.");
+		exit(1);
+	}
+	
 	// Socket.
 	int sock = socket(PF_INET, SOCK_STREAM, 0);
 	if ( sock < 0 ) {
@@ -34,7 +46,6 @@ int main()
 	struct sockaddr_in server;
 	server.sin_family = PF_INET;
 	
-	const char *hostname = "localhost";
 	struct hostent *hp = gethostbyname(hostname);
 	if ( hp == NULL ) {
 		perror("Unknown host");

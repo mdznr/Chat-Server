@@ -1,2 +1,2 @@
 dependencies: \
-  /Users/Matt/Dropbox/School/2014\ Spring/Network\ Programming/Project\ 2/SocketClient/Chat\ Client/main.c
+  /Users/Matt/Dropbox/School/2014\ Spring/Network\ Programming/Project\ 3/Chat\ Client/Chat\ Client/main.c
