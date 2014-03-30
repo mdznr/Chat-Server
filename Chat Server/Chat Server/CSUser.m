@@ -10,16 +10,6 @@
 
 #include <sys/socket.h>
 
-@interface CSUser () {
-	int fd;
-}
-
-/// The file descriptor the user can be contacted on.
-@property int fd;
-
-@end
-
-
 #pragma mark -
 
 @implementation CSUser

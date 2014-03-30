@@ -8,6 +8,7 @@
 
 @interface CSUser : NSObject {
 	NSString *username;
+	int fd;
 }
 
 /// Create a user with a particular name and file descriptior.
@@ -18,6 +19,9 @@
 
 /// The name of the user.
 @property NSString *username;
+
+/// The file descriptor the user can be contacted on.
+@property int fd;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.
