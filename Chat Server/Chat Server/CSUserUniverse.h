@@ -12,7 +12,12 @@
 
 @class CSUserUniverse;
 
-@interface CSUserUniverse : NSObject
+@interface CSUserUniverse : NSObject {
+	NSMutableArray *users;
+}
+
+/// All the users that exist in this universe.
+@property NSMutableArray *users;
 
 #pragma mark - Managing Users
 
