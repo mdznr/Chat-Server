@@ -6,21 +6,19 @@
 //  Copyright (c) 2014 Matt Zanchelli. All rights reserved.
 //
 
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <sys/types.h>
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netdb.h>
 #include <pthread.h>
-#include <stdio.h>
+#include <string.h>
 #include <strings.h> /* for bcopy */
 #include <unistd.h>
 #include <arpa/inet.h>
 
 #define BUFFER_SIZE 1024
-
-unsigned short port = 8127;
 
 /// Handle incoming network traffic for use in new thread.
 /// @param argument an int* cast as void*
@@ -70,13 +68,13 @@ int main(int argc, const char *argv[])
 	printf("Successfully connected to the chat server at %s:%hu.\n", hostname, port);
 	
 	// Threads
-	pthread_t tid[1];
+	pthread_t tid;
 	
 	// Receive network thread.
 	// Create a new thread for the user.
-	int *fd = malloc(sizeof(int));
+	int *fd = (int *) malloc(sizeof(int));
 	*fd = sock;
-	if ( pthread_create(&tid[1], NULL, handleNetwork, (void *) fd) != 0 ) {
+	if ( pthread_create(&tid, NULL, handleNetwork, (void *) fd) != 0 ) {
 		perror("Could not create thread.");
 		close(sock);
 		exit(1);
