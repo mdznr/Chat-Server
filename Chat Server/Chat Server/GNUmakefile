@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 
 TOOL_NAME = chatserver
 chatserver_OBJC_PRECOMPILED_HEADERS = Chat\ Server-Prefix.pch 
-chatserver_OBJC_FILES = main.m ArrayHelper.m CommandLineArguments.m CSUser.m CSUserUniverse.m Options.m RequestHandling.m
+chatserver_OBJC_FILES = main.m ArrayHelper.m CommandLineArguments.m CSUser.m CSUserUniverse.m Options.m
 
 include $(GNUSTEP_MAKEFILES)/tool.make
 
