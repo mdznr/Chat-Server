@@ -27,7 +27,7 @@
 @property int fd;
 
 /// The universe the user is in.
-@property (weak) CSUserUniverse *universe;
+@property CSUserUniverse __weak *universe;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.
