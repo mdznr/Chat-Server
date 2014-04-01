@@ -314,7 +314,7 @@ void *handleRequest(void *argument)
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
 			NSArray *components = [command componentsSeparatedByString:@" "];
-			// Must have at least three components.
+			// Must have at least two components.
 			if ( [components count] < 2 ) {
 				sendResponseToClient(@"ERROR", fd);
 				continue;
