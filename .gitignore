@@ -1,0 +1,10 @@
+Chat Server/DerivedData/*
+Chat Client/DerivedData/*
+DerivedData/*
+Chat Client/DerivedData/Build/Intermediates/Chat Client.build/Debug/Chat Client.build/build-state.dat
+Chat Client/DerivedData/Build/Intermediates/Chat Client.build/Debug/Chat Client.build/Chat Client.dep
+Chat Client/DerivedData/Build/Intermediates/Chat Client.build/Debug/Chat Client.build/Objects-normal/x86_64/main.o
+Chat Client/DerivedData/Build/Products/Debug/Chat Client
+Chat Client/DerivedData/Chat Client/Index/Debug/macosx10.8-x86_64/Chat Client.xcindex/db.xcindexdb-shm
+Chat Client/DerivedData/Chat Client/Index/Debug/macosx10.8-x86_64/Chat Client.xcindex/db.xcindexdb-wal
+Chat Client/DerivedData/Chat Client/Index/Debug/macosx10.8-x86_64/Chat Client.xcindex/db.xcindexdb.strings-res
