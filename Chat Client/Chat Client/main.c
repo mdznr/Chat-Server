@@ -67,10 +67,8 @@ int main(int argc, const char *argv[])
 	
 	printf("Successfully connected to the chat server at %s:%hu.\n", hostname, port);
 	
-	// Threads
+	// Incoming network thread.
 	pthread_t tid;
-	
-	// Receive network thread.
 	// Create a new thread for the user.
 	int *fd = (int *) malloc(sizeof(int));
 	*fd = sock;
