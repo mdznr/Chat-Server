@@ -259,8 +259,6 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	return EXIT_SUCCESS;
 }
 
-#warning Log user out when connection is closed.
-
 void *handleRequest(void *argument)
 {
 	// Unpack argument into variables.
@@ -283,8 +281,7 @@ void *handleRequest(void *argument)
 		ssize_t n = recv(fd, buffer, BUFFER_SIZE - 1, 0);
 		// Check recv() return value.
 		if ( n <= 0 ) {
-			// Errored.
-			perror("recv()");
+			// Errored or ended.
 			break;
 		} else {
 			// Stream received message.
@@ -329,6 +326,9 @@ void *handleRequest(void *argument)
 	}
 	
 end:
+	
+	// The user has lost connection, remove them from the universe.
+	[universe removeUser:user];
 	
 	// The socket is no longer needed.
 	close(fd);
