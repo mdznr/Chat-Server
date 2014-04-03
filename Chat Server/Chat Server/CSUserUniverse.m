@@ -105,7 +105,7 @@
 {
 	// Create a full message in the format:
 	// username: message
-	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", [sender username], message];
+	NSString *fullMessage = [NSString stringWithFormat:@"%@: %@", [[sender username] capitalizedString], message];
 	return fullMessage;
 }
 
