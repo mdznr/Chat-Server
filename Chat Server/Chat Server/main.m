@@ -323,6 +323,39 @@ void *handleRequest(void *argument)
 			NSString *message = [command substringFromIndex:9+1+[fromUsername length]+1];
 			[user broadcastMessage:message];
 			sendResponseToClient(@"OK", fd);
+		} else if ( [command hasPrefix:@"WHO HERE "] ) {
+#warning does this really need <from-user>?
+			NSArray *components = [command componentsSeparatedByString:@" "];
+			// Must have two components.
+			if ( [components count] != 2 ) {
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
+#warning do any kind of check to make sure this user is OK?
+			NSString *listOfUsers = [universe listOfUsers];
+			sendResponseToClient(listOfUsers, fd);
+		} else if ( [command hasPrefix:@"LOGOUT "] ) { // BROADCAST
+			NSArray *components = [command componentsSeparatedByString:@" "];
+			// Must have two components.
+			if ( [components count] != 2 ) {
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
+			CSUser *foundUser = [universe findUserWithName:fromUsername];
+			if ( !foundUser ) {
+				// Could not find user.
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+#warning the way this protocol works is anyone can log another user out. WAT?
+			if ( ![universe removeUser:foundUser] ) {
+				// Could not remove user from universe.
+				sendResponseToClient(@"ERROR", fd);
+				continue;
+			}
+			sendResponseToClient(@"OK", fd);
 		} else {
 			// Unrecognized command.
 			sendResponseToClient(@"ERROR", fd);

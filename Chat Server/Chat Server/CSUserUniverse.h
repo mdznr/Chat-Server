@@ -39,6 +39,10 @@
 /// @return The user with the specified name or @c nil if a user could not be found.
 - (CSUser *)findUserWithName:(NSString *)name;
 
+///	Get a list of users to return to a client.
+///	@return A string representing all the users that are logged in.
+- (NSString *)listOfUsers;
+
 
 #pragma mark - Sending Messages and Broadcasting
 

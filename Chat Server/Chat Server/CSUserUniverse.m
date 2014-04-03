@@ -24,7 +24,7 @@
 }
 
 
-#pragma mark - Public API
+#pragma mark - Managing Users
 
 - (BOOL)addUser:(CSUser *)user
 {
@@ -62,6 +62,9 @@
 	return NO;
 }
 
+
+#pragma mark - Looking Up Users
+
 - (CSUser *)findUserWithName:(NSString *)name
 {
 	// Iterate over all users.
@@ -74,6 +77,18 @@
 	// Return nil, since no user has been found.
 	return nil;
 }
+
+- (NSString *)listOfUsers
+{
+	NSString *string = @"";
+	for ( CSUser *u in self.users ) {
+		string = [string stringByAppendingFormat:@" %@", u.username];
+	}
+	return string;
+}
+
+
+#pragma mark - Sending Messages and Broadcasting
 
 - (BOOL)sendMessage:(NSString *)message toUserWithName:(NSString *)name sender:(CSUser *)sender
 {
@@ -92,9 +107,8 @@
 	// The full message to send to all users.
 	NSString *fullMessage = [CSUserUniverse fullMessageStringFromBaseMessage:message fromUser:sender];
 	
-	// Iterate over all users in the universe.
+	// Iterate over all users in the universe and send them the message.
 	for ( CSUser *u in self.users ) {
-		// Send the message.
 		[u sendMessage:fullMessage];
 	}
 }
