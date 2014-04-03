@@ -13,11 +13,11 @@
 @class CSUserUniverse;
 
 @interface CSUserUniverse : NSObject {
-	NSMutableArray *users;
+	NSMutableSet *users;
 }
 
 /// All the users that exist in this universe.
-@property (atomic) NSMutableArray *users;
+@property (atomic) NSMutableSet *users;
 
 #pragma mark - Managing Users
 

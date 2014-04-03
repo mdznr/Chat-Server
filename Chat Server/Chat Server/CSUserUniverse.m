@@ -18,7 +18,7 @@
 {
 	self = [super init];
 	if ( self ) {
-		[self setUsers:[[NSMutableArray alloc] init]];
+		[self setUsers:[[NSMutableSet alloc] init]];
 	}
 	return self;
 }
