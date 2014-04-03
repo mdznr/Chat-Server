@@ -228,6 +228,8 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		
 		// The username is the third component of the command.
 		NSString *username = (NSString *) [components objectAtIndex:2];
+		// 9. Usernames must be case insensitive; downcase all usernames.
+		username = [username lowercaseString];
 		
 		// Create and add the user to the universe.
 		CSUser *user = [CSUser userWithUsername:username andFileDescriptor:fd];
@@ -296,13 +298,14 @@ void *handleRequest(void *argument)
 		if ( [command hasPrefix:@"SEND "] ) {
 			// SEND
 			NSArray *components = [command componentsSeparatedByString:@" "];
-			// Must have at least three components.
-			if ( [components count] < 3 ) {
+			// Must have at least four components.
+			if ( [components count] < 4 ) {
 				sendResponseToClient(@"ERROR", fd);
 				continue;
 			}
-			NSString *toUsername = [components objectAtIndex:1];
-			NSString *message = [command substringFromIndex:6+[toUsername length]];
+			NSString *fromUsername = [components objectAtIndex:1];
+			NSString *toUsername = [components objectAtIndex:2];
+			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]+1];
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
 				sendResponseToClient(@"OK", fd);
 			} else {
