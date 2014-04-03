@@ -119,7 +119,7 @@ void *handleNetwork(void *argument)
 	// Receive.
 	while (1) {
 		// BLOCK
-		ssize_t received_n = recv(*fd, buffer, BUFFER_SIZE - 1, 0);
+		ssize_t received_n = recv(*fd, buffer, BUFFER_SIZE-1, 0);
 		if ( received_n == 0 ) {
 			// Peer has closed its half side of the (TCP) connection.
 			fflush(NULL);
@@ -136,6 +136,9 @@ void *handleNetwork(void *argument)
 			printf("%s\n", buffer);
 		}
 	}
+	
+	// Connection ended.
+	exit(1);
 	
 	// Use this to return message back to calling thread and terminate.
 	pthread_exit(NULL);

@@ -17,7 +17,7 @@
 }
 
 /// All the users that exist in this universe.
-@property NSMutableArray *users;
+@property (atomic) NSMutableArray *users;
 
 #pragma mark - Managing Users
 

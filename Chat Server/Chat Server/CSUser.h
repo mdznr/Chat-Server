@@ -11,7 +11,7 @@
 @interface CSUser : NSObject {
 	NSString *username;
 	int fd;
-	CSUserUniverse __weak *universe;
+	CSUserUniverse *universe;
 }
 
 /// Create a user with a particular name and file descriptior.
@@ -27,7 +27,7 @@
 @property int fd;
 
 /// The universe the user is in.
-@property CSUserUniverse __weak *universe;
+@property CSUserUniverse *universe;
 
 /// Send the receiving user a message.
 /// @param message The message to send to the user.
