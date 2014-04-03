@@ -314,12 +314,13 @@ void *handleRequest(void *argument)
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
 			NSArray *components = [command componentsSeparatedByString:@" "];
-			// Must have at least two components.
-			if ( [components count] < 2 ) {
+			// Must have at least three components.
+			if ( [components count] < 3 ) {
 				sendResponseToClient(@"ERROR", fd);
 				continue;
 			}
-			NSString *message = [command substringFromIndex:10];
+			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
+			NSString *message = [command substringFromIndex:9+1+[fromUsername length]+1];
 			[user broadcastMessage:message];
 			sendResponseToClient(@"OK", fd);
 		} else {
