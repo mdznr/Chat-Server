@@ -303,8 +303,8 @@ void *handleRequest(void *argument)
 				sendResponseToClient(@"ERROR", fd);
 				continue;
 			}
-			NSString *fromUsername = [components objectAtIndex:1];
-			NSString *toUsername = [components objectAtIndex:2];
+			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
+			NSString *toUsername = [[components objectAtIndex:2] lowercaseString];
 			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]+1];
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
 				sendResponseToClient(@"OK", fd);
