@@ -326,12 +326,12 @@ void *handleRequest(void *argument)
 		} else if ( [command hasPrefix:@"WHO HERE "] ) {
 #warning does this really need <from-user>?
 			NSArray *components = [command componentsSeparatedByString:@" "];
-			// Must have two components.
-			if ( [components count] != 2 ) {
+			// Must have three components ("WHO HERE" is two of them).
+			if ( [components count] != 3 ) {
 				sendResponseToClient(@"ERROR", fd);
 				continue;
 			}
-			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
+			NSString *fromUsername = [[components objectAtIndex:2] lowercaseString];
 #warning do any kind of check to make sure this user is OK?
 			NSString *listOfUsers = [universe listOfUsers];
 			sendResponseToClient(listOfUsers, fd);
