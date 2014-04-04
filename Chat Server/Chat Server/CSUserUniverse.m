@@ -8,8 +8,6 @@
 
 #import "CSUserUniverse.h"
 
-#pragma mark -
-
 @implementation CSUserUniverse
 
 @synthesize users;

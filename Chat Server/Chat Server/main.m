@@ -244,7 +244,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		}
 		
 #ifdef DEBUG
-		NSLog(@"User: %@ logged in.", user);
+		NSLog(@"User: %@ logged in.", [user.username capitalizedString]);
 #endif
 		sendResponseToClient(@"OK", fd);
 		
