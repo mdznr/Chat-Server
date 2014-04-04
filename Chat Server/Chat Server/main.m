@@ -305,7 +305,7 @@ void *handleRequest(void *argument)
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			NSString *toUsername = [[components objectAtIndex:2] lowercaseString];
-			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]+1];
+			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]];
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
 				sendResponseToClient(@"OK", fd);
 			} else {
@@ -324,7 +324,6 @@ void *handleRequest(void *argument)
 			[user broadcastMessage:message];
 			sendResponseToClient(@"OK", fd);
 		} else if ( [command hasPrefix:@"WHO HERE "] ) {
-#warning does this really need <from-user>?
 			NSArray *components = [command componentsSeparatedByString:@" "];
 			// Must have three components ("WHO HERE" is two of them).
 			if ( [components count] != 3 ) {
@@ -356,6 +355,8 @@ void *handleRequest(void *argument)
 				continue;
 			}
 			sendResponseToClient(@"OK", fd);
+			// End.
+			break;
 		} else {
 			// Unrecognized command.
 			sendResponseToClient(@"ERROR", fd);
