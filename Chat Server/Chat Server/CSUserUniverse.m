@@ -82,7 +82,7 @@
 {
 	NSString *string = @"";
 	for ( CSUser *u in self.users ) {
-		string = [string stringByAppendingFormat:@" %@", u.username];
+		string = [string stringByAppendingFormat:@" %@", [u.username capitalizedString]];
 	}
 	return string;
 }
