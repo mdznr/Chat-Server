@@ -199,7 +199,8 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		
 		// Ensure the command string terminates.
 		buffer[n] = '\0';
-		NSString *command = [NSString stringWithUTF8String:buffer];
+		NSString *command = [[NSString stringWithUTF8String:buffer] stringByRemovingTrailingWhitespace];
+		
 #ifdef DEBUG
 		NSLog(@"Received command: %@", command);
 #endif
@@ -216,7 +217,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		}
 		
 		// Get the components of the command.
-		NSArray *components = [command componentsSeparatedByString:@" "];
+		NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if ( components.count != 3 ) {
 #ifdef DEBUG
 			NSLog(@"Spaces are not allowed in username.");
@@ -294,10 +295,10 @@ void *handleRequest(void *argument)
 		}
 		
 		// Handle command.
-		NSString *command = [NSString stringWithUTF8String:buffer];
+		NSString *command = [[NSString stringWithUTF8String:buffer] stringByRemovingTrailingWhitespace];
 		if ( [command hasPrefix:@"SEND "] ) {
 			// SEND
-			NSArray *components = [command componentsSeparatedByString:@" "];
+			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least four components.
 			if ( [components count] < 4 ) {
 				sendResponseToClient(@"ERROR", fd);
@@ -313,7 +314,7 @@ void *handleRequest(void *argument)
 			}
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
-			NSArray *components = [command componentsSeparatedByString:@" "];
+			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least three components.
 			if ( [components count] < 3 ) {
 				sendResponseToClient(@"ERROR", fd);
@@ -324,7 +325,7 @@ void *handleRequest(void *argument)
 			[user broadcastMessage:message];
 			sendResponseToClient(@"OK", fd);
 		} else if ( [command hasPrefix:@"WHO HERE "] ) {
-			NSArray *components = [command componentsSeparatedByString:@" "];
+			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have three components ("WHO HERE" is two of them).
 			if ( [components count] != 3 ) {
 				sendResponseToClient(@"ERROR", fd);
@@ -335,7 +336,7 @@ void *handleRequest(void *argument)
 			NSString *listOfUsers = [universe listOfUsers];
 			sendResponseToClient(listOfUsers, fd);
 		} else if ( [command hasPrefix:@"LOGOUT "] ) { // BROADCAST
-			NSArray *components = [command componentsSeparatedByString:@" "];
+			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have two components.
 			if ( [components count] != 2 ) {
 				sendResponseToClient(@"ERROR", fd);
