@@ -211,7 +211,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 #ifdef DEBUG
 			NSLog(@"New connection did not properly authenticate.");
 #endif
-			sendResponseToClient(@"ERROR", fd);
+			sendResponseToClient(@"ERROR: Must authenticate first.", fd);
 			close(fd);
 			continue;
 		}
@@ -222,7 +222,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 #ifdef DEBUG
 			NSLog(@"Spaces are not allowed in username.");
 #endif
-			sendResponseToClient(@"ERROR", fd);
+			sendResponseToClient(@"ERROR: Spaces are not allowed in a username.", fd);
 			close(fd);
 			continue;
 		}
@@ -238,7 +238,7 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 #ifdef DEBUG
 			NSLog(@"A user with name '%@' is already logged in.", username);
 #endif
-			sendResponseToClient(@"ERROR", fd);
+			sendResponseToClient(@"ERROR: A user with that username is already logged in.", fd);
 			close(fd);
 			continue;
 		}
@@ -301,7 +301,7 @@ void *handleRequest(void *argument)
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least four components.
 			if ( [components count] < 4 ) {
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Not enough arguments for 'SEND' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
@@ -310,14 +310,14 @@ void *handleRequest(void *argument)
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
 				sendResponseToClient(@"OK", fd);
 			} else {
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Could not send message to user.", fd);
 			}
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least three components.
 			if ( [components count] < 3 ) {
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Not enough arguments for 'BROADCAST' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
@@ -328,7 +328,7 @@ void *handleRequest(void *argument)
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have three components ("WHO HERE" is two of them).
 			if ( [components count] != 3 ) {
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Invalid number of arguments for 'WHO HERE' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:2] lowercaseString];
@@ -339,20 +339,20 @@ void *handleRequest(void *argument)
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have two components.
 			if ( [components count] != 2 ) {
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Invalid number of arguments for 'LOGOUT' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			CSUser *foundUser = [universe findUserWithName:fromUsername];
 			if ( !foundUser ) {
 				// Could not find user.
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Could not find the user to logout.", fd);
 				continue;
 			}
 #warning the way this protocol works is anyone can log another user out. WAT?
 			if ( ![universe removeUser:foundUser] ) {
 				// Could not remove user from universe.
-				sendResponseToClient(@"ERROR", fd);
+				sendResponseToClient(@"ERROR: Could not logout user.", fd);
 				continue;
 			}
 			sendResponseToClient(@"OK", fd);
@@ -360,7 +360,7 @@ void *handleRequest(void *argument)
 			break;
 		} else {
 			// Unrecognized command.
-			sendResponseToClient(@"ERROR", fd);
+			sendResponseToClient(@"ERROR: Unrecognized command.", fd);
 		}
 	}
 	
