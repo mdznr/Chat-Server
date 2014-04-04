@@ -205,13 +205,13 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		NSLog(@"Received command: %@", command);
 #endif
 		
-		// Make sure command is the authentication command.
+		// Make sure command is the log in command.
 		if ( ![command hasPrefix:@"ME IS "] ) {
-			// Did not properly authenticate.
+			// Did not properly log in.
 #ifdef DEBUG
-			NSLog(@"New connection did not properly authenticate.");
+			NSLog(@"New connection did not properly log in.");
 #endif
-			sendResponseToClient(@"ERROR: Must authenticate first.", fd);
+			sendResponseToClient(@"ERROR: Must log in first.", fd);
 			close(fd);
 			continue;
 		}
