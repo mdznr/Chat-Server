@@ -82,8 +82,36 @@ NSSet *getPorts(NSArray *arguments)
 ///	@param client The file descriptor of the client.
 void sendResponseToClient(NSString *response, int client)
 {
+	// Log message.
+	if ( verboseMode ) {
+		NSLog(@"SENT to %d: %@", client, response);
+	}
+	
 	// The c string version of response string.
 	const char *cresponse = [response UTF8String];
+	
+	// Send a message back.
+	ssize_t send_client_n = send(client, cresponse, strlen(cresponse), 0);
+	if ( send_client_n < strlen(cresponse) ) {
+		perror("send()");
+	}
+}
+
+///	Send a response back to a user.
+///	@param response The response string to send back.
+///	@param user The user to send a response.
+void sendResponseToUser(NSString *response, CSUser *user)
+{
+	// Log message.
+	if ( verboseMode ) {
+		NSLog(@"SENT to %@ (%d): %@", [user.username capitalizedString], user.fd, response);
+	}
+	
+	// The c string version of response string.
+	const char *cresponse = [response UTF8String];
+	
+	// The file descriptor for the user.
+	int client = user.fd;
 	
 	// Send a message back.
 	ssize_t send_client_n = send(client, cresponse, strlen(cresponse), 0);
@@ -170,7 +198,9 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	struct sockaddr_in client;
 	socklen_t fromlen = sizeof(client);
 	listen(sock, MAX_CLIENTS); // 5 is the number of backlogged waiting clients.
-	NSLog(@"Listener socket created and bound to port %d.", port);
+#ifdef DEBUG
+		NSLog(@"Listener socket created and bound to port %d.", port);
+#endif
 	
 	// Threads
 	pthread_t tid[MAX_CLIENTS];
@@ -182,8 +212,12 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	while (true) {
 		// Accept client connection.
 		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
+		
+		// Read the IP Address into a string.
+		char *ip_addr = inet_ntoa((struct in_addr)client.sin_addr);
+		
 #ifdef DEBUG
-		NSLog(@"Accepted client connection on fd: %d", fd);
+		NSLog(@"Accepted client connection (%s) on fd %d.", ip_addr, fd);
 #endif
 		// The first message must be authenticating a user.
 		char buffer[BUFFER_SIZE]; // A buffer to read the message into.
@@ -201,17 +235,18 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		buffer[n] = '\0';
 		NSString *command = [[NSString stringWithUTF8String:buffer] stringByRemovingTrailingWhitespace];
 		
-#ifdef DEBUG
-		NSLog(@"Received command: %@", command);
-#endif
+		if ( verboseMode ) {
+			NSLog(@"RCVD from %s: %@", ip_addr, command);
+		}
 		
 		// Make sure command is the log in command.
 		if ( ![command hasPrefix:@"ME IS "] ) {
 			// Did not properly log in.
-#ifdef DEBUG
-			NSLog(@"New connection did not properly log in.");
-#endif
-			sendResponseToClient(@"ERROR: Must log in first.", fd);
+			NSString *error = @"ERROR: Must log in first.";
+			if ( verboseMode ) {
+				NSLog(@"SENT to %s: %@", ip_addr, command);
+			}
+			sendResponseToClient(error, fd);
 			close(fd);
 			continue;
 		}
@@ -219,10 +254,11 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		// Get the components of the command.
 		NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 		if ( components.count != 3 ) {
-#ifdef DEBUG
-			NSLog(@"Spaces are not allowed in username.");
-#endif
-			sendResponseToClient(@"ERROR: Spaces are not allowed in a username.", fd);
+			NSString *error = @"ERROR: Spaces are not allowed in a username.";
+			if ( verboseMode ) {
+				NSLog(@"SENT to %s: %@", ip_addr, error);
+			}
+			sendResponseToClient(error, fd);
 			close(fd);
 			continue;
 		}
@@ -235,10 +271,11 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 		// Create and add the user to the universe.
 		CSUser *user = [CSUser userWithUsername:username andFileDescriptor:fd];
 		if ( ![universe addUser:user] ) {
-#ifdef DEBUG
-			NSLog(@"A user with name '%@' is already logged in.", username);
-#endif
-			sendResponseToClient(@"ERROR: A user with that username is already logged in.", fd);
+			NSString *error = @"ERROR: A user with that username is already logged in.";
+			if ( verboseMode ) {
+				NSLog(@"SENT to %s: %@", ip_addr, error);
+			}
+			sendResponseToClient(error, fd);
 			close(fd);
 			continue;
 		}
@@ -246,7 +283,11 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 #ifdef DEBUG
 		NSLog(@"User: %@ logged in.", [user.username capitalizedString]);
 #endif
-		sendResponseToClient(@"OK", fd);
+		NSString *response = @"OK";
+		if ( verboseMode ) {
+			NSLog(@"SENT to %s: %@", ip_addr, response);
+		}
+		sendResponseToClient(response, fd);
 		
 		// Create a new thread for the user.
 		sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
@@ -272,6 +313,10 @@ void *handleRequest(void *argument)
 	
 	// Get a reference to the user with the specified username.
 	CSUser *user = [universe findUserWithName:username];
+	if ( !user ) {
+		// Failed t find user.
+		goto end;
+	}
 
 	// Read the IP Address into a string.
 	char *ip_addr = inet_ntoa((struct in_addr)client.sin_addr);
@@ -289,9 +334,9 @@ void *handleRequest(void *argument)
 		} else {
 			// Stream received message.
 			buffer[n] = '\0';
-#ifdef DEBUG
-			NSLog(@"Received message from fd %d at %s`: %s", fd, ip_addr, buffer);
-#endif
+			if ( verboseMode ) {
+				NSLog(@"RCVD from %@ (%s): %s", [user.username capitalizedString], ip_addr, buffer);
+			}
 		}
 		
 		// Handle command.
@@ -301,29 +346,49 @@ void *handleRequest(void *argument)
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least four components.
 			if ( [components count] < 4 ) {
-				sendResponseToClient(@"ERROR: Not enough arguments for 'SEND' command.", fd);
+				NSString *error = @"ERROR: Not enough arguments for 'SEND' command.";
+				if ( verboseMode ) {
+					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
+				}
+				sendResponseToClient(error, fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			NSString *toUsername = [[components objectAtIndex:2] lowercaseString];
 			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]];
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
-				sendResponseToClient(@"OK", fd);
+				NSString *response = @"OK";
+				if ( verboseMode ) {
+					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, response);
+				}
+				sendResponseToClient(response, fd);
 			} else {
-				sendResponseToClient(@"ERROR: Could not send message to user.", fd);
+				NSString *error = @"ERROR: Could not send message to user.";
+				if ( verboseMode ) {
+					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
+				}
+				sendResponseToClient(error, fd);
 			}
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least three components.
 			if ( [components count] < 3 ) {
-				sendResponseToClient(@"ERROR: Not enough arguments for 'BROADCAST' command.", fd);
+				NSString *error = @"ERROR: Not enough arguments for 'BROADCAST' command.";
+				if ( verboseMode ) {
+					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
+				}
+				sendResponseToClient(error, fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			NSString *message = [command substringFromIndex:9+1+[fromUsername length]+1];
 			[user broadcastMessage:message];
-			sendResponseToClient(@"OK", fd);
+			NSString *response = @"OK";
+			if ( verboseMode ) {
+				NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, response);
+			}
+			sendResponseToClient(response, fd);
 		} else if ( [command hasPrefix:@"WHO HERE "] ) {
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have three components ("WHO HERE" is two of them).
