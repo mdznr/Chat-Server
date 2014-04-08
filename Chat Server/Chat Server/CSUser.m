@@ -15,7 +15,7 @@
 
 @implementation CSUser
 
-@synthesize username, fd, universe;
+@synthesize username, fd, ip, port, universe;
 
 - (NSString *)description
 {
@@ -35,6 +35,15 @@
 	CSUser *newUser = [[CSUser alloc] init];
 	[newUser setUsername:username];
 	[newUser setFd:fd];
+	return newUser;
+}
+
++ (id)userWithUsername:(NSString *)username IPAddress:(NSString *)ip andPort:(unsigned short)port
+{
+	CSUser *newUser = [[CSUser alloc] init];
+	[newUser setUsername:username];
+	[newUser setIp:ip];
+	[newUser setPort:port];
 	return newUser;
 }
 

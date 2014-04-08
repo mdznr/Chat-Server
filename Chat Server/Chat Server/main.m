@@ -19,8 +19,6 @@
 
 #import "CSUserUniverse.h"
 
-#warning How to handle the log statements? Debug? Verbose?
-
 ///	The size for a buffer.
 #define BUFFER_SIZE 2048
 
@@ -42,11 +40,28 @@ typedef struct {
 	const char *username;
 } sock_addr;
 
-/// Handle a request.
+///	Handle TCP requests on a port.
+///	@param port The port connected to.
+///	@return @c NULL
+void *handleTCP(void *port);
+
+///	Handle UDP requests on a port.
+///	@param port The port connected to.
+///	@return @c NULL
+void *handleUDP(void *port);
+
+///	Handle a request
+///	@param server The server.
+///	@param client The client.
+///	@param fd The file descriptor accepted on.
+/// @param tid The threads to give to give out to the clients.
+void handleRequest(struct sockaddr_in *server, struct sockaddr_in *client, int fd, pthread_t *tid);
+
+/// Handle a client.
 /// @param arg The socket address structure.
 /// @return @c NULL
 /// @discussion Designed for use in new thread.
-void *handleRequest(void *arg);
+void *handleClient(void *arg);
 
 ///	Get the ports from the misc. arguments.
 ///	@param arguments The misc. arguments given to the program.
@@ -170,22 +185,62 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	}
 #endif
 	
+	unsigned long numThreads = 2 * [ports count];
+	
+	// Threads.
+	// Have TCP and UDP threads for each port.
+	pthread_t tid[numThreads];
+	
+	// Create the universe!
+	universe = [[CSUserUniverse alloc] init];
+	
+	// Create TCP and UDP threads for each port.
+	NSArray *allPorts = [ports allObjects];
+	for ( NSUInteger i=0; i<[allPorts count]; ++i ) {
+		// Get the port number.
+		NSNumber *portNo = [allPorts objectAtIndex:i];
+		unsigned short *port = (unsigned short *) malloc(sizeof(unsigned short));
+		*port = [portNo unsignedShortValue];
+		
+		// Create TCP thread.
+		if ( pthread_create(&tid[(2*i)], NULL, handleTCP, (void *) port) != 0 ) {
+			perror("Could not create TCP thread.");
+		}
+		
+		// Create UDP thread.
+		if ( pthread_create(&tid[(2*i)+1], NULL, handleUDP, (void *) port) != 0 ) {
+			perror("Could not create UDP thread.");
+		}
+	}
+	
+	// Wait for threads to join back.
+	for ( unsigned long i=0; i<numThreads; ++i ) {
+		pthread_join(tid[i], NULL);
+	}
+	
+	return EXIT_SUCCESS;
+}
+
+void *handleTCP(void *argument)
+{
+	unsigned short *port = (unsigned short *) argument;
+	
+	// Threads.
+	// Have threads for each possible client.
+	pthread_t tid[MAX_CLIENTS];
+	
 	// Create the listener socket as TCP socket. (use SOCK_DGRAM for UDP)
-#warning Enable UDP, too. (SOCK_DGRAM)
 	int sock = socket(PF_INET, SOCK_STREAM, 0);
 	if ( sock < 0 ) {
 		perror("socket()");
 		exit(1);
 	}
 	
-#warning Handle multiple ports.
-	unsigned short port = [((NSNumber *)[ports anyObject]) unsignedShortValue];
-	
 	// Create the server.
 	struct sockaddr_in server;
 	server.sin_family = PF_INET;
 	server.sin_addr.s_addr = INADDR_ANY;
-	server.sin_port = htons(port);
+	server.sin_port = htons(*port);
 	
 	// Bind.
 	socklen_t len = sizeof(server);
@@ -199,111 +254,150 @@ int run(NSString *name, NSDictionary *options, NSArray *misc)
 	socklen_t fromlen = sizeof(client);
 	listen(sock, MAX_CLIENTS); // 5 is the number of backlogged waiting clients.
 #ifdef DEBUG
-		NSLog(@"Listener socket created and bound to port %d.", port);
+	NSLog(@"TCP listener socket created and bound to port %d.", *port);
 #endif
-	
-	// Threads
-	pthread_t tid[MAX_CLIENTS];
-	
-	// Create the universe!
-	universe = [[CSUserUniverse alloc] init];
 	
 	// Keep taking requests from client.
 	while (true) {
 		// Accept client connection.
 		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
-		
-		// Read the IP Address into a string.
-		char *ip_addr = inet_ntoa((struct in_addr)client.sin_addr);
-		
-#ifdef DEBUG
-		NSLog(@"Accepted client connection (%s) on fd %d.", ip_addr, fd);
-#endif
-		// The first message must be authenticating a user.
-		char buffer[BUFFER_SIZE]; // A buffer to read the message into.
-		// Receive the message.
-		ssize_t n = recv(fd, buffer, BUFFER_SIZE-1, 0);
-		// Check if recv() errored.
-		if ( n <= 0 ) {
-			// Errored.
-			perror("recv()");
-			close(fd);
+		if ( fd == -1 ) {
+			NSLog(@"Failed to accept client connection.");
 			continue;
 		}
-		
-		// Ensure the command string terminates.
-		buffer[n] = '\0';
-		NSString *command = [[NSString stringWithUTF8String:buffer] stringByRemovingTrailingWhitespace];
-		
-		if ( verboseMode ) {
-			NSLog(@"RCVD from %s: %@", ip_addr, command);
-		}
-		
-		// Make sure command is the log in command.
-		if ( ![command hasPrefix:@"ME IS "] ) {
-			// Did not properly log in.
-			NSString *error = @"ERROR: Must log in first.";
-			if ( verboseMode ) {
-				NSLog(@"SENT to %s: %@", ip_addr, command);
-			}
-			sendResponseToClient(error, fd);
-			close(fd);
-			continue;
-		}
-		
-		// Get the components of the command.
-		NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
-		if ( components.count != 3 ) {
-			NSString *error = @"ERROR: Spaces are not allowed in a username.";
-			if ( verboseMode ) {
-				NSLog(@"SENT to %s: %@", ip_addr, error);
-			}
-			sendResponseToClient(error, fd);
-			close(fd);
-			continue;
-		}
-		
-		// The username is the third component of the command.
-		NSString *username = (NSString *) [components objectAtIndex:2];
-		// 9. Usernames must be case insensitive; downcase all usernames.
-		username = [username lowercaseString];
-		
-		// Create and add the user to the universe.
-		CSUser *user = [CSUser userWithUsername:username andFileDescriptor:fd];
-		if ( ![universe addUser:user] ) {
-			NSString *error = @"ERROR: A user with that username is already logged in.";
-			if ( verboseMode ) {
-				NSLog(@"SENT to %s: %@", ip_addr, error);
-			}
-			sendResponseToClient(error, fd);
-			close(fd);
-			continue;
-		}
-		
-#ifdef DEBUG
-		NSLog(@"User: %@ logged in.", [user.username capitalizedString]);
-#endif
-		NSString *response = @"OK";
-		if ( verboseMode ) {
-			NSLog(@"SENT to %s: %@", ip_addr, response);
-		}
-		sendResponseToClient(response, fd);
-		
-		// Create a new thread for the user.
-		sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
-		arg->sock = fd;
-		arg->address = server;
-		arg->username = [[user username] UTF8String];
-		if ( pthread_create(&tid[fd], NULL, handleRequest, (void *) arg) != 0 ) {
-			perror("Could not create thread.");
-			close(fd);
-			continue;
-		}
+		handleRequest(&server, &client, fd, tid);
 	}
-	return EXIT_SUCCESS;
+	
+	return NULL;
 }
 
-void *handleRequest(void *argument)
+void *handleUDP(void *argument)
+{
+	unsigned short *port = (unsigned short *) argument;
+	
+	// Threads.
+	// Have threads for each possible client.
+	pthread_t tid[MAX_CLIENTS];
+	
+	// Create the listener socket as TCP socket. (use SOCK_DGRAM for UDP)
+	int sock = socket(PF_INET, SOCK_DGRAM, 0);
+	if ( sock < 0 ) {
+		perror("socket()");
+		exit(1);
+	}
+	
+	// Create the server.
+	struct sockaddr_in server;
+	server.sin_family = PF_INET;
+	server.sin_addr.s_addr = INADDR_ANY;
+	server.sin_port = htons(*port);
+	
+	// Bind.
+	socklen_t len = sizeof(server);
+	if ( bind(sock, (const struct sockaddr *) &server, len) < 0 ) {
+		perror("bind()");
+		exit(1);
+	}
+	
+	// Create the client.
+	struct sockaddr_in client;
+	socklen_t fromlen = sizeof(client);
+	listen(sock, MAX_CLIENTS);
+#ifdef DEBUG
+	NSLog(@"UDP listener socket created and bound to port %d.", *port);
+#endif
+	
+	// Keep taking requests from client.
+	while (true) {
+		// Accept client connection.
+		int fd = accept(sock, (struct sockaddr *) &client, &fromlen);
+		if ( fd == -1 ) {
+//			NSLog(@"%d", errno);
+//			NSLog(@"Failed to accept client connection.");
+			continue;
+		}
+		handleRequest(&server, &client, fd, tid);
+	}
+	
+	return NULL;
+}
+
+void handleRequest(struct sockaddr_in *server, struct sockaddr_in *client, int fd, pthread_t *tid)
+{
+	// Read the IP Address into a string.
+	char *ip_addr = inet_ntoa((struct in_addr)client->sin_addr);
+	
+#ifdef DEBUG
+	NSLog(@"Accepted client connection (%s) on fd %d.", ip_addr, fd);
+#endif
+	// A buffer to read the message into.
+	char buffer[BUFFER_SIZE];
+	// Receive the message.
+	ssize_t n = recv(fd, buffer, BUFFER_SIZE-1, 0);
+	// Check if recv() errored.
+	if ( n <= 0 ) {
+		// Errored.
+		perror("recv()");
+		close(fd);
+		return;
+	}
+	
+	// Ensure the command string terminates.
+	buffer[n] = '\0';
+	NSString *command = [[NSString stringWithUTF8String:buffer] stringByRemovingTrailingWhitespace];
+	
+	if ( verboseMode ) {
+		NSLog(@"RCVD from %s: %@", ip_addr, command);
+	}
+	
+	// Make sure command is the log in command.
+	if ( ![command hasPrefix:@"ME IS "] ) {
+		// Did not properly log in.
+#warning How to include ip_addr? like @"SENT to %s: %@", ip_addr, command
+		sendResponseToClient(@"ERROR: Must log in first.", fd);
+		close(fd);
+		return;
+	}
+	
+	// Get the components of the command.
+	NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
+	if ( components.count != 3 ) {
+		sendResponseToClient(@"ERROR: Spaces are not allowed in a username.", fd);
+		close(fd);
+		return;
+	}
+	
+	// The username is the third component of the command.
+	NSString *username = (NSString *) [components objectAtIndex:2];
+	// 9. Usernames must be case insensitive; downcase all usernames.
+	username = [username lowercaseString];
+	
+	// Create and add the user to the universe.
+	CSUser *user = [CSUser userWithUsername:username andFileDescriptor:fd];
+	if ( ![universe addUser:user] ) {
+		sendResponseToClient(@"ERROR: A user with that username is already logged in.", fd);
+		close(fd);
+		return;
+	}
+	
+#ifdef DEBUG
+	NSLog(@"User: %@ logged in.", [user.username capitalizedString]);
+#endif
+	sendResponseToClient(@"OK", fd);
+	
+	// Create a new thread for the user.
+	sock_addr *arg = (sock_addr *) malloc(sizeof(sock_addr));
+	arg->sock = fd;
+	arg->address = *server;
+	arg->username = [[user username] UTF8String];
+	if ( pthread_create(&tid[fd], NULL, handleClient, (void *) arg) != 0 ) {
+		perror("Could not create thread.");
+		close(fd);
+		return;
+	}
+}
+
+void *handleClient(void *argument)
 {
 	// Unpack argument into variables.
 	sock_addr *arg = (sock_addr *) argument;
@@ -346,49 +440,29 @@ void *handleRequest(void *argument)
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least four components.
 			if ( [components count] < 4 ) {
-				NSString *error = @"ERROR: Not enough arguments for 'SEND' command.";
-				if ( verboseMode ) {
-					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
-				}
-				sendResponseToClient(error, fd);
+				sendResponseToClient(@"ERROR: Not enough arguments for 'SEND' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			NSString *toUsername = [[components objectAtIndex:2] lowercaseString];
 			NSString *message = [command substringFromIndex:5+1+[fromUsername length]+1+[toUsername length]];
 			if ( [user sendOutgoingMessage:message toUserWithName:toUsername] ) {
-				NSString *response = @"OK";
-				if ( verboseMode ) {
-					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, response);
-				}
-				sendResponseToClient(response, fd);
+				sendResponseToUser(@"OK", user);
 			} else {
-				NSString *error = @"ERROR: Could not send message to user.";
-				if ( verboseMode ) {
-					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
-				}
-				sendResponseToClient(error, fd);
+				sendResponseToClient(@"ERROR: Could not send message to user.", fd);
 			}
 		} else if ( [command hasPrefix:@"BROADCAST "] ) {
 			// BROADCAST
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have at least three components.
 			if ( [components count] < 3 ) {
-				NSString *error = @"ERROR: Not enough arguments for 'BROADCAST' command.";
-				if ( verboseMode ) {
-					NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, error);
-				}
-				sendResponseToClient(error, fd);
+				sendResponseToClient(@"ERROR: Not enough arguments for 'BROADCAST' command.", fd);
 				continue;
 			}
 			NSString *fromUsername = [[components objectAtIndex:1] lowercaseString];
 			NSString *message = [command substringFromIndex:9+1+[fromUsername length]+1];
 			[user broadcastMessage:message];
-			NSString *response = @"OK";
-			if ( verboseMode ) {
-				NSLog(@"SENT to %@ (%s): %@", [user.username capitalizedString], ip_addr, response);
-			}
-			sendResponseToClient(response, fd);
+			sendResponseToUser(@"OK", user);
 		} else if ( [command hasPrefix:@"WHO HERE "] ) {
 			NSArray *components = [command componentsSeparatedByCharactersInSet:[NSCharacterSet whitespaceAndNewlineCharacterSet]];
 			// Must have three components ("WHO HERE" is two of them).

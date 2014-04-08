@@ -9,9 +9,16 @@
 @class CSUserUniverse;
 
 @interface CSUser : NSObject {
+	// For all clients:
 	NSString *username;
-	int fd;
 	CSUserUniverse *universe;
+	
+	// For TCP clients:
+	int fd;
+	
+	// For UDP clients:
+	NSString *ip;
+	unsigned short port;
 }
 
 /// Create a user with a particular name and file descriptior.
@@ -20,11 +27,24 @@
 /// @return A new user.
 + (id)userWithUsername:(NSString *)username andFileDescriptor:(int)fd;
 
+///	Create a user at a particular IP and port. (UDP)
+///	@param username THe name the user goes by.
+///	@param ip The IP of the user.
+///	@param port The port number connected on.
+///	@return A new user.
++ (id)userWithUsername:(NSString *)username IPAddress:(NSString *)ip andPort:(unsigned short)port;
+
 /// The name of the user.
 @property NSString *username;
 
 /// The file descriptor the user can be contacted on.
 @property int fd;
+
+///	The IP address of the user (for UDP clients).
+@property NSString *ip;
+
+///	The port number of the user (for UDP clients).
+@property unsigned short port;
 
 /// The universe the user is in.
 @property CSUserUniverse *universe;
