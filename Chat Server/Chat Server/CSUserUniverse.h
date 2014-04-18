@@ -17,7 +17,7 @@
 }
 
 /// All the users that exist in this universe.
-@property (atomic) NSMutableSet *users;
+@property NSMutableSet *users;
 
 #pragma mark - Managing Users
 
