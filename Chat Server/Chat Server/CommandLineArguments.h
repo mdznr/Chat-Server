@@ -7,6 +7,9 @@
 //
 
 /// The function to be declared by your program.
+///	@param name The filename of the program.
+///	@param options A dictionary for the options and their corresponding values.
+///	@param misc Any miscellaneous values that did not correspond to an option.
 int run(NSString *name, NSDictionary *options, NSArray *misc);
 
 /// The true main function that handles the argument parsing.
