@@ -1,0 +1,148 @@
+2014-04-29 20:22:06.941 Chat Server[22460:303] Verbose Mode is enabled.
+2014-04-29 20:22:06.941 Chat Server[22460:303] Starting Chat Server on port 8888.
+2014-04-29 20:22:06.942 Chat Server[22460:2103] UDP listener socket created and bound to port 8888.
+2014-04-29 20:22:06.942 Chat Server[22460:2003] TCP listener socket created and bound to port 8888.
+2014-04-29 20:22:30.728 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:22:33.965 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:22:33.966 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:22:33.966 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:22:36.880 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:22:40.233 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS selena
+2014-04-29 20:22:40.234 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:22:40.234 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:22:42.888 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 8.
+2014-04-29 20:22:45.209 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS paris
+2014-04-29 20:22:45.210 Chat Server[22460:2003] User: Paris logged in.
+2014-04-29 20:22:45.210 Chat Server[22460:2003] SENT to 8: OK
+2014-04-29 20:22:49.401 Chat Server[22460:1507] RCVD from Paris (0.0.0.0): ME IS gaga
+2014-04-29 20:22:49.401 Chat Server[22460:1507] SENT to 8: ERROR: Unrecognized command.
+2014-04-29 20:22:52.415 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 9.
+2014-04-29 20:22:54.209 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:22:54.209 Chat Server[22460:2003] SENT to 9: ERROR: A user with that username is already logged in.
+2014-04-29 20:26:30.656 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:26:32.032 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:26:32.033 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:26:32.033 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:26:39.832 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:26:42.640 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS paris
+2014-04-29 20:26:42.640 Chat Server[22460:2003] User: Paris logged in.
+2014-04-29 20:26:42.641 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:26:45.648 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 8.
+2014-04-29 20:26:49.160 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS
+2014-04-29 20:26:49.160 Chat Server[22460:2003] SENT to 8: ERROR: Must log in first.
+2014-04-29 20:26:56.943 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:26:59.935 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:26:59.936 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:26:59.936 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:27:02.271 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:27:03.703 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS paris
+2014-04-29 20:27:03.704 Chat Server[22460:2003] User: Paris logged in.
+2014-04-29 20:27:03.704 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:27:18.812 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 8.
+2014-04-29 20:27:20.662 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS selena
+2014-04-29 20:27:20.663 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:27:20.663 Chat Server[22460:2003] SENT to 8: OK
+2014-04-29 20:28:08.061 Chat Server[22460:180f] RCVD from Gaga (0.0.0.0): SEND gaga selena
+2014-04-29 20:28:08.062 Chat Server[22460:180f] SENT to 6: ERROR: Not enough arguments for 'SEND' command.
+2014-04-29 20:29:16.514 Chat Server[22460:180f] RCVD from Gaga (0.0.0.0): SEND gaga selena
+5
+Hello
+2014-04-29 20:29:16.515 Chat Server[22460:180f] SENT to Gaga (6): OK
+2014-04-29 20:29:45.034 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:29:57.657 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:29:57.657 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:29:57.657 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:29:57.658 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:30:01.360 Chat Server[22460:2003] RCVD from 0.0.0.0: ME IS paris
+2014-04-29 20:30:01.361 Chat Server[22460:2003] User: Paris logged in.
+2014-04-29 20:30:01.361 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:30:01.361 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 8.
+2014-04-29 20:30:03.712 Chat Server[22460:2003] RCVD from 0.0.0.0: ME IS selena
+2014-04-29 20:30:03.713 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:30:03.713 Chat Server[22460:2003] SENT to 8: OK
+2014-04-29 20:30:24.744 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:30:24.744 Chat Server[22460:141b] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:30:26.959 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:30:26.960 Chat Server[22460:141b] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:30:29.288 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:30:29.288 Chat Server[22460:141b] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:30:29.431 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:30:29.432 Chat Server[22460:141b] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:30:29.551 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:30:29.552 Chat Server[22460:141b] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:30:46.399 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): SEND gaga selena
+5
+Hello
+2014-04-29 20:30:46.399 Chat Server[22460:141b] SENT to Gaga (6): OK
+2014-04-29 20:32:30.867 Chat Server[22460:141b] RCVD from Gaga (0.0.0.0): SEND gaga selena
+C5
+Hello
+C0
+2014-04-29 20:32:30.867 Chat Server[22460:141b] SENT to Gaga (6): OK
+2014-04-29 20:32:54.001 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:33:00.649 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:33:00.650 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:33:00.650 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:33:00.650 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:33:02.649 Chat Server[22460:2003] RCVD from 0.0.0.0: ME IS selena
+2014-04-29 20:33:02.650 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:33:02.650 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:33:02.651 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 8.
+2014-04-29 20:33:04.369 Chat Server[22460:2003] RCVD from 0.0.0.0: ME IS paris
+2014-04-29 20:33:04.370 Chat Server[22460:2003] User: Paris logged in.
+2014-04-29 20:33:04.370 Chat Server[22460:2003] SENT to 8: OK
+2014-04-29 20:33:20.833 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:20.833 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:21.865 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:21.865 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:22.017 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:22.017 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:22.161 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:22.161 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:22.304 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:22.305 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:22.444 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:33:22.445 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:33:45.800 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): SEND gaga selena
+C5
+Hello
+C0
+2014-04-29 20:33:45.800 Chat Server[22460:2b07] SENT to Gaga (6): OK
+2014-04-29 20:41:03.191 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): BROADCAST gaga
+5
+Hello
+2014-04-29 20:41:03.191 Chat Server[22460:2b07] SENT to Gaga (6): OK
+2014-04-29 20:42:13.684 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:42:13.685 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:42:13.844 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:42:13.845 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:42:14.068 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:42:14.068 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:42:14.372 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): 
+2014-04-29 20:42:14.373 Chat Server[22460:2b07] SENT to 6: ERROR: Unrecognized command.
+2014-04-29 20:42:18.181 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): WHO HERE gaga
+2014-04-29 20:42:18.181 Chat Server[22460:2b07] SENT to 6:  Selena Paris Gaga
+2014-04-29 20:43:53.224 Chat Server[22460:2b07] RCVD from Gaga (0.0.0.0): LOGOUT gaga
+2014-04-29 20:43:53.225 Chat Server[22460:2b07] SENT to 6: OK
+2014-04-29 20:44:00.832 Chat Server[22460:2813] RCVD from Selena (0.0.0.0): WHO HERE selena
+2014-04-29 20:44:00.832 Chat Server[22460:2813] SENT to 7:  Selena Paris
+2014-04-29 20:45:11.964 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:45:28.453 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS selena
+2014-04-29 20:45:28.453 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:45:28.454 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:45:28.454 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:45:28.454 Chat Server[22460:2003] RCVD from 0.0.0.0: ME IS gaga
+2014-04-29 20:45:28.455 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:45:28.455 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:46:07.834 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 6.
+2014-04-29 20:46:12.979 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS gaga
+2014-04-29 20:46:12.980 Chat Server[22460:2003] User: Gaga logged in.
+2014-04-29 20:46:12.980 Chat Server[22460:2003] SENT to 6: OK
+2014-04-29 20:46:16.419 Chat Server[22460:2003] Accepted client connection (127.0.0.1) on fd 7.
+2014-04-29 20:46:19.147 Chat Server[22460:2003] RCVD from 127.0.0.1: ME IS selena
+2014-04-29 20:46:19.147 Chat Server[22460:2003] User: Selena logged in.
+2014-04-29 20:46:19.147 Chat Server[22460:2003] SENT to 7: OK
+2014-04-29 20:47:44.935 Chat Server[22460:281f] RCVD from Gaga (0.0.0.0): SEND gaga selena
+5
+Hello
+2014-04-29 20:47:44.936 Chat Server[22460:281f] SENT to Gaga (6): OK
